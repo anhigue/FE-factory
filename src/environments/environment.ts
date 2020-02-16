@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  API_BASE: 'http://localhost:',
+  KEY_JSON: 'SIE_PASS',
+  algorithm: 'aes256',
+  encoding: 'hex',
+  USER_KEY: 'userKey',
+  USER_RESET_KEY: 'userResetKey'
 };
 
 /*
