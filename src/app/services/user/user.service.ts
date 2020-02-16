@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ErrorHandler } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -11,7 +11,6 @@ import { UserInterface } from '../../../interfaces/UserInterface';
   providedIn: 'root'
 })
 export class UserService {
-
   private headers: HttpHeaders;
 
   constructor(
@@ -25,15 +24,15 @@ export class UserService {
     );
   }
 
-  LogIn(User: any): Observable<any> {
-    return this.http.post<any>(environment.API_BASE + '/usuario/login', User, {
+  LogIn(User: UserInterface): Observable<UserInterface> {
+    return this.http.post<UserInterface>(environment.API_BASE + '', User, {
       headers: this.headers
     });
   }
 
-  setLogIn(User: UserInterface, log: boolean): void {
+  setLogIn(User: UserInterface): void {
     this.cookieService.set(environment.USER_KEY, JSON.stringify(User));
-    this.route.navigateByUrl('home/dashboard');
+    this.route.navigateByUrl('home');
   }
 
   IsLogged(): boolean {
@@ -43,10 +42,12 @@ export class UserService {
     return false;
   }
 
-  getUser(): any {
-    return JSON.parse(
-      this.cookieService.get(environment.USER_KEY) || '{ "access": "false" }'
-    );
+ getUser(): any {
+    try {
+      return JSON.parse(this.cookieService.get(environment.USER_KEY));
+    } catch (error) {
+      return error;
+    }
   }
 
   Logout(): void {
@@ -54,40 +55,32 @@ export class UserService {
     this.route.navigateByUrl('/login');
   }
 
-  createUser(User: any): Observable<any> {
-    return this.http.post(environment.API_BASE + '', User, {
+  createUser(User: UserInterface): Observable<boolean> {
+    return this.http.post<boolean>(environment.API_BASE + '', User, {
       headers: this.headers
     });
   }
 
-  readUser(): Observable<any> {
-    return this.http.post(environment.API_BASE + '', {
+  readUser(): Observable<UserInterface[]> {
+    return this.http.get<UserInterface[]>(environment.API_BASE + '', {
       headers: this.headers
     });
   }
 
-  updateUser(User: any) {
-    return this.http.put(environment.API_BASE + '', User, {
+  readUserById(UserId: number): Observable<UserInterface> {
+    return this.http.get<UserInterface>(environment.API_BASE + '' + UserId, {
       headers: this.headers
     });
   }
 
-  resetPass(User: any) {
-    return this.http.post(environment.API_BASE + '', User, {
+  updateUser(User: UserInterface): Observable<UserInterface> {
+    return this.http.post<UserInterface>(environment.API_BASE + '', User, {
       headers: this.headers
     });
   }
 
-  setPassInCookies(SecretPass: string): void {
-    this.cookieService.set(environment.USER_RESET_KEY, SecretPass);
-  }
-
-  getResetPass(): string {
-    return this.cookieService.get(environment.USER_RESET_KEY);
-  }
-
-  updatePass(UserPass: any): Observable<any> {
-    return this.http.post<any>(environment.API_BASE + '', UserPass, {
+  deleteUser(User: UserInterface): Observable<boolean> {
+    return this.http.post<boolean>(environment.API_BASE + '', User, {
       headers: this.headers
     });
   }

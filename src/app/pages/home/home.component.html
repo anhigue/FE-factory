@@ -28,19 +28,19 @@
                 <i class="glyphicon glyphicon-home"></i> Información personal </a>
             </li>
             <li class="active">
-              <a [routerLink]="['dashboard']">
+              <a [routerLink]="['catalogue/part']">
                 <i class="glyphicon glyphicon-user"></i> Ordenes de repuestos </a>
             </li>
             <li class="active">
-              <a [routerLink]="['account']">
+              <a [routerLink]="['catalogue/cars']">
                 <i class="glyphicon glyphicon-user"></i> Catalogo de vehiculos </a>
             </li>
             <li class="active">
-              <a [routerLink]="['help']">
+              <a [routerLink]="['catalogue/user']">
                 <i class="glyphicon glyphicon-flag"></i> Catalogo de Clientes </a>
             </li>
             <li class="active">
-              <a [routerLink]="['help']">
+              <a [routerLink]="['setting']">
                 <i class="glyphicon glyphicon-flag"></i> Administracion </a>
             </li>
           </ul>
@@ -52,17 +52,12 @@
       <div class="profile-content">
         <div class="d-inline">
           <div class="row">
-            <div class="col-11">
+            <div class="col-md-12">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item active" aria-current="page" *ngFor="let item of url">{{item}}</li>
                 </ol>
               </nav>
-            </div>
-            <div class="col-1">
-              <button mat-button color="primary" class="float-left" [routerLink]="['/home/dashboard']" routerLinkActive="router-link-active" >
-                <mat-icon>dashboard</mat-icon>
-              </button>
             </div>
           </div>
         </div>

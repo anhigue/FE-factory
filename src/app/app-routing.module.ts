@@ -3,12 +3,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { Error404Component } from './pages/error404/error404.component';
-
+import { InformationComponent } from './pages/home/information/information.component';
+import { SettingsComponent } from './pages/home/settings/settings.component';
+import { CatalogueCarsComponent } from './pages/home/catalogue-cars/catalogue-cars.component';
+import { CatalogueUserComponent } from './pages/home/catalogue-user/catalogue-user.component';
+import { CataloguePartsComponent } from './pages/home/catalogue-parts/catalogue-parts.component';
+import { UserInGuard } from './guard/user-in.guard';
+import { UserOutGuard } from './guard/user-out.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [ UserInGuard ]
   },
   {
     path: '',
@@ -17,7 +24,44 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [UserOutGuard],
+    children: [
+      {
+        path: 'information',
+        component: InformationComponent,
+        canActivate: [UserOutGuard]
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'information'
+      },
+      {
+        path: 'setting',
+        component: SettingsComponent,
+        canActivate: [UserOutGuard],
+      },
+      {
+        path: 'catalogue/cars',
+        component: CatalogueCarsComponent,
+        canActivate: [UserOutGuard],
+      },
+      {
+        path: 'catalogue/user',
+        component: CatalogueUserComponent,
+        canActivate: [UserOutGuard],
+      },
+      {
+        path: 'catalogue/part',
+        component: CataloguePartsComponent,
+        canActivate: [UserOutGuard],
+      },
+      {
+        path: '**',
+        component: Error404Component
+      }
+    ]
   },
   {
     path: '**',
@@ -29,4 +73,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
