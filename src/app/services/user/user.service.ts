@@ -56,13 +56,13 @@ export class UserService {
   }
 
   createUser(User: UserInterface): Observable<boolean> {
-    return this.http.post<boolean>(environment.API_BASE + '', User, {
+    return this.http.post<boolean>(environment.API_BASE + '/user/create', User, {
       headers: this.headers
     });
   }
 
   readUser(): Observable<UserInterface[]> {
-    return this.http.get<UserInterface[]>(environment.API_BASE + '', {
+    return this.http.get<UserInterface[]>(environment.API_BASE + '/user', {
       headers: this.headers
     });
   }
@@ -73,14 +73,14 @@ export class UserService {
     });
   }
 
-  updateUser(User: UserInterface): Observable<UserInterface> {
-    return this.http.post<UserInterface>(environment.API_BASE + '', User, {
+  updateUser(User: UserInterface): Observable<any> {
+    return this.http.post<any>(environment.API_BASE + '/user/update', User, {
       headers: this.headers
     });
   }
 
-  deleteUser(User: UserInterface): Observable<boolean> {
-    return this.http.post<boolean>(environment.API_BASE + '', User, {
+  deleteUser(User: UserInterface): Observable<any> {
+    return this.http.post<any>(environment.API_BASE + '/user/delete', User, {
       headers: this.headers
     });
   }
