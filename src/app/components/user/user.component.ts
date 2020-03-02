@@ -68,6 +68,14 @@ export class UserComponent implements OnInit {
       );
   }
 
+  public openDialogDelete(User: UserInterface) {
+    this._DIALOG_SERVICE.showDelete().beforeClosed().subscribe( rest => {
+      if (rest) {
+        this.deleteUser(User);
+      }
+    });
+  }
+
   private getUsers() {
     this._USER_SERVICE.readUser().subscribe((res: any[]) => {
       if (res) {
