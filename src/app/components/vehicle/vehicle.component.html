@@ -1,0 +1,47 @@
+<h5>Modulo de Vehiculos</h5>
+<small>Realiza todas las acciones posibles con los vehiculos</small>
+<hr>
+
+<table mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="universalCode">
+    <th mat-header-cell *matHeaderCellDef> Codigo Universal. </th>
+    <td mat-cell *matCellDef="let element"> {{element.universalCode}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="brand">
+    <th mat-header-cell *matHeaderCellDef> Marca </th>
+    <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="line">
+    <th mat-header-cell *matHeaderCellDef> Linea </th>
+    <td mat-cell *matCellDef="let element"> {{element.line}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="year">
+    <th mat-header-cell *matHeaderCellDef> Año </th>
+    <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="options">
+    <th mat-header-cell *matHeaderCellDef> Opciones </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-menu #appMenuCoin="matMenu">
+        <ng-template matMenuContent>
+          <button mat-menu-item (click)="wantEdit(element);">Editar</button>
+          <button mat-menu-item (click)="wantDelete(element);">Eliminar</button>
+        </ng-template>
+      </mat-menu>
+      <button mat-icon-button [matMenuTriggerFor]="appMenuCoin">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<button mat-button id="btn-add" class="float-left" (click)="wantCreate();" ><em class="material-icons">add_circle</em></button>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

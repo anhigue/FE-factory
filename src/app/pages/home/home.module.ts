@@ -20,6 +20,10 @@ import { ErrorComponent } from '../../components/error/error.component';
 import { DeleteComponent } from '../../components/delete/delete.component';
 import { FactoryComponent } from '../../components/factory/factory.component';
 import { FactoryDialogComponent } from '../../components/factory-dialog/factory-dialog.component';
+import { VehicleComponent } from '../../components/vehicle/vehicle.component';
+import { VehicleDialogComponent } from '../../components/vehicle-dialog/vehicle-dialog.component';
+import { FactoryService } from '../../services/factory/factory.service';
+import { VehiclesService } from '../../services/vehicles/vehicles.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,9 @@ import { FactoryDialogComponent } from '../../components/factory-dialog/factory-
     ErrorComponent,
     DeleteComponent,
     FactoryComponent,
-    FactoryDialogComponent
+    FactoryDialogComponent,
+    VehicleComponent,
+    VehicleDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -50,11 +56,15 @@ import { FactoryDialogComponent } from '../../components/factory-dialog/factory-
     SuccessComponent,
     ErrorComponent,
     DeleteComponent,
+    FactoryDialogComponent,
+    VehicleDialogComponent,
   ],
   providers: [
     {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
-    UserService
+    UserService,
+    FactoryService,
+    VehiclesService
   ],
   bootstrap: [HomeComponent]
 })

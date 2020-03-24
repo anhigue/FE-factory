@@ -1,1 +1,47 @@
-<p>factory-dialog works!</p>
+<h2 mat-dialog-title>Opciones de Fabrica</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroupFactory">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Id" type="text" required [(ngModel)]="factoryUpdate._id"
+            formControlName="_id"/>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Nombre Fabrica" type="text" required [(ngModel)]="factoryUpdate.nameFactory"
+            formControlName="nameFactory" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="IP" type="text" required [(ngModel)]="factoryUpdate.ip"
+            formControlName="ip"/>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Token" type="password" required [(ngModel)]="factoryUpdate.token"
+            formControlName="token" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field>
+          <input matInput placeholder="Direccion" type="text" required [(ngModel)]="factoryUpdate.address"
+            formControlName="address" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+  <button mat-button [mat-dialog-close]="factoryUpdate" *ngIf="formGroupFactory.valid">
+    Ok.
+  </button>
+</mat-dialog-actions>

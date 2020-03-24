@@ -11,10 +11,7 @@ import { MaterialModule } from './material-module';
 import { HomeModule } from './pages/home/home.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
-import { SuccessComponent } from './components/success/success.component';
-import { ErrorComponent } from './components/error/error.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DeleteComponent } from './components/delete/delete.component';
 
 @NgModule({
   declarations: [
