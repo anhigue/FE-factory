@@ -32,11 +32,13 @@ export class DialogService {
     return dialogRef;
   }
 
-  showError(): MatDialogRef<unknown> {
-    const dialogRef = this.dialog.open(ErrorComponent, {
-      data: this.shareData
-    });
-    return dialogRef;
+  showError(title?: string, message?: string, error?: any): MatDialogRef<unknown> {
+    this.shareData =  {
+      title,
+      message,
+      error
+    };
+    return this.openDialog(ErrorComponent);
   }
 
   showDelete(): MatDialogRef<unknown> {

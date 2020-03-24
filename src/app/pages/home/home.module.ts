@@ -18,6 +18,8 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
 import { SuccessComponent } from '../../components/success/success.component';
 import { ErrorComponent } from '../../components/error/error.component';
 import { DeleteComponent } from '../../components/delete/delete.component';
+import { FactoryComponent } from '../../components/factory/factory.component';
+import { FactoryDialogComponent } from '../../components/factory-dialog/factory-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { DeleteComponent } from '../../components/delete/delete.component';
     SuccessComponent,
     ErrorComponent,
     DeleteComponent,
+    FactoryComponent,
+    FactoryDialogComponent
   ],
   imports: [
     CommonModule,
