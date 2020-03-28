@@ -24,6 +24,15 @@ import { VehicleComponent } from '../../components/vehicle/vehicle.component';
 import { VehicleDialogComponent } from '../../components/vehicle-dialog/vehicle-dialog.component';
 import { FactoryService } from '../../services/factory/factory.service';
 import { VehiclesService } from '../../services/vehicles/vehicles.service';
+import { ClientComponent } from '../../components/client/client.component';
+import { ClientDialogComponent } from '../../components/client-dialog/client-dialog.component';
+import { ClientService } from '../../services/client/client.service';
+import { DialogService } from '../../services/dialog/dialog.service';
+import { PartService } from '../../services/part/part.service';
+import { PartComponent } from '../../components/part/part.component';
+import { PartDialogComponent } from '../../components/part-dialog/part-dialog.component';
+import { PartVehicleDialogComponent } from '../../components/part-vehicle-dialog/part-vehicle-dialog.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -41,6 +50,11 @@ import { VehiclesService } from '../../services/vehicles/vehicles.service';
     FactoryDialogComponent,
     VehicleComponent,
     VehicleDialogComponent,
+    ClientComponent,
+    ClientDialogComponent,
+    PartComponent,
+    PartDialogComponent,
+    PartVehicleDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -58,13 +72,21 @@ import { VehiclesService } from '../../services/vehicles/vehicles.service';
     DeleteComponent,
     FactoryDialogComponent,
     VehicleDialogComponent,
+    ClientDialogComponent,
+    PartDialogComponent,
+    PartVehicleDialogComponent,
   ],
   providers: [
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } },
     {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     UserService,
     FactoryService,
-    VehiclesService
+    VehiclesService,
+    ClientService,
+    DialogService,
+    PartService
   ],
   bootstrap: [HomeComponent]
 })

@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Opciones de Cliente</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroupClient">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Nombre cliente" type="text" required [(ngModel)]="clientUpdate.name"
+            formControlName="name" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <br>
+        <mat-slide-toggle [(ngModel)]="clientUpdate.status"> Estado</mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Tiempo de entrega (Dias)" type="number" required [(ngModel)]="clientUpdate.timeDelivery"
+            formControlName="timeDelivery" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Token" type="password" required [(ngModel)]="clientUpdate.token"
+            formControlName="token" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field>
+          <input matInput placeholder="Direccion" type="text" required [(ngModel)]="clientUpdate.address"
+            formControlName="address" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+  <button mat-button [mat-dialog-close]="clientUpdate" *ngIf="formGroupClient.valid">
+    Ok.
+  </button>
+</mat-dialog-actions>

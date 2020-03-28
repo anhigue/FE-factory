@@ -31,7 +31,7 @@ export class VehiclesService {
   }
 
   deleteVehicle(vehicle: VehicleInterface): Observable<any> {
-    return this.http.delete(environment.API_BASE + '/vehicle/' + vehicle.universalCode, {headers: this.headers});
+    return this.http.delete(environment.API_BASE + '/vehicle/' + vehicle._id, {headers: this.headers});
   }
 
 }

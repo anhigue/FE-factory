@@ -50,6 +50,16 @@ export class VehicleComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
           }
         });
+      this.vehicles.push({
+        universalCode: 'AAAXDDDS',
+        brand: 'Ford',
+        line: 'Escape',
+        year: 2001
+      });
+      this.dataSource = new MatTableDataSource<VehicleInterface>(
+        this.vehicles
+      );
+      this.dataSource.paginator = this.paginator;
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         null,
@@ -113,7 +123,7 @@ export class VehicleComponent implements OnInit {
     try {
       this._DIALOG_SERVICE.shareData = vahicle;
       this._DIALOG_SERVICE
-        .openDialog(VehicleComponent)
+        .openDialog(VehicleDialogComponent)
         .beforeClosed()
         .subscribe((value: VehicleInterface) => {
           if (value) {
@@ -132,7 +142,7 @@ export class VehicleComponent implements OnInit {
   wantDelete(vehicle: VehicleInterface) {
     try {
       this._DIALOG_SERVICE
-        .showDelete()
+        .showDelete(null, 'Estas seguro que quieres eliminar este vehiculo', null)
         .beforeClosed()
         .subscribe((value: any) => {
           if (value) {
@@ -148,8 +158,9 @@ export class VehicleComponent implements OnInit {
     }
   }
 
-  wantCreate(vehicle: VehicleInterface): void {
+  wantCreate(): void {
     try {
+      this._DIALOG_SERVICE.shareData = {};
       this._DIALOG_SERVICE
         .openDialog(VehicleDialogComponent)
         .beforeClosed()
