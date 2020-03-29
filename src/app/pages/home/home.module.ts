@@ -33,6 +33,7 @@ import { PartComponent } from '../../components/part/part.component';
 import { PartDialogComponent } from '../../components/part-dialog/part-dialog.component';
 import { PartVehicleDialogComponent } from '../../components/part-vehicle-dialog/part-vehicle-dialog.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { SalesComponent } from '../../components/sales/sales.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     PartComponent,
     PartDialogComponent,
     PartVehicleDialogComponent,
+    SalesComponent,
   ],
   imports: [
     CommonModule,
