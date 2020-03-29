@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ClientInterface } from '../../../interfaces/ClientInterface';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-client-dialog',
@@ -27,5 +28,9 @@ export class ClientDialogComponent implements OnInit {
       token: ['', Validators.required],
       address: ['', Validators.required],
     });
+  }
+
+  onChange(ms: MatSlideToggleChange): void {
+    this.clientUpdate.status = ms.checked;
   }
 }

@@ -15,7 +15,13 @@ import { MatTableDataSource } from '@angular/material/table';
 export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
   clients: ClientInterface[] = [];
   dataSource: MatTableDataSource<ClientInterface>;
-  displayedColumns: string[] = ['name', 'address', 'status', 'timeDelivery', 'options'];
+  displayedColumns: string[] = [
+    'name',
+    'address',
+    'status',
+    'timeDelivery',
+    'options'
+  ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(
@@ -66,7 +72,13 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
 
   wantCreate(item?: ClientInterface): void {
     try {
-      this._DIALOG_SERVIE.shareData = {};
+      this._DIALOG_SERVIE.shareData = {
+        name: null,
+        timeDelivery: null,
+        status: null,
+        token: null,
+        address: null
+      };
       this._DIALOG_SERVIE
         .openDialog(ClientDialogComponent)
         .beforeClosed()
