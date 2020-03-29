@@ -203,9 +203,14 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
         .beforeClosed()
         .subscribe((value: ActionReturnInterface) => {
           if (value.type === 'delete') {
-            this.UnAssignVehicle(value.data);
+            const index = product.vehicles.indexOf(value.data);
+            if (index > -1) {
+              product.vehicles.splice(index, 1);
+              this.assignVehicle(product);
+            }
           } else if (value.type === 'assign') {
-            this.assignVehicle(value.data);
+            product.vehicles.push(value.data);
+            this.assignVehicle(product);
           }
         });
     } catch (error) {
@@ -235,24 +240,4 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
       );
     }
   }
-
-  private UnAssignVehicle(product: PartInterface) {
-    try {
-      this._PART_SERVICE
-        .unAssignVehicleProduct(product)
-        .subscribe((value: any) => {
-          if (value) {
-            /* message success here */
-            this.getParts();
-          }
-        });
-    } catch (error) {
-      this._DIALOG_SERVICE.showError(
-        error,
-        'Error',
-        'Error al borrar un vehiculo al repuesto.'
-      );
-    }
-  }
-
 }

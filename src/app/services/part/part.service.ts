@@ -21,27 +21,23 @@ export class PartService {
   }
 
   newProduct(product: PartInterface): Observable<any> {
-    return this.http.post(environment.API_BASE + '', product, {headers: this.headers});
+    return this.http.post(environment.API_BASE + '/part', product, {headers: this.headers});
   }
 
   readProduct(): Observable<PartInterface[]> {
-    return this.http.get<PartInterface[]>(environment.API_BASE + '', { headers: this.headers});
+    return this.http.get<PartInterface[]>(environment.API_BASE + '/part', { headers: this.headers});
   }
 
   updateProduct(product: PartInterface): Observable<any> {
-    return this.http.put<any>(environment.API_BASE + '', product, {headers: this.headers});
+    return this.http.put<any>(environment.API_BASE + '/part', product, {headers: this.headers});
   }
 
   deleteProduct(product: PartInterface): Observable<any> {
-    return this.http.delete(environment.API_BASE + '' + product._id, {headers: this.headers});
+    return this.http.delete(environment.API_BASE + '/part/' + product._id, {headers: this.headers});
   }
 
   assignVehicleProduct(product: PartInterface): Observable<any> {
-    return this.http.post<any>(environment.API_BASE + '', product, {headers: this.headers});
-  }
-
-  unAssignVehicleProduct(product: PartInterface): Observable<any> {
-    return this.http.put<any>(environment.API_BASE + '', product, {headers: this.headers});
+    return this.http.put<any>(environment.API_BASE + '/part/vehicle', product, {headers: this.headers});
   }
 
 }
