@@ -50,16 +50,6 @@ export class VehicleComponent implements OnInit {
             this.dataSource.paginator = this.paginator;
           }
         });
-      this.vehicles.push({
-        universalCode: 'AAAXDDDS',
-        brand: 'Ford',
-        line: 'Escape',
-        year: 2001
-      });
-      this.dataSource = new MatTableDataSource<VehicleInterface>(
-        this.vehicles
-      );
-      this.dataSource.paginator = this.paginator;
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         null,
