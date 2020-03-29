@@ -85,7 +85,7 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.newFactory(factory).subscribe((value: any) => {
         if (value) {
-          /* message success show here */
+          this._DIALOG_SERVICE.showSuccess();
           this.getFactory();
         }
       });
@@ -122,7 +122,7 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.updateFactory(factory).subscribe((value: any) => {
         if (value) {
-          /* message update here */
+          this._DIALOG_SERVICE.showSuccess();
           this.getFactory();
         }
       });
@@ -143,7 +143,7 @@ export class FactoryComponent implements OnInit {
         data: {}
       };
       this._DIALOG_SERVICE
-        .openDialog(DialogCustomComponent)
+        .showDelete('Eliminar', 'Estas seguro de que quieres eliminar esata fabrica.', null)
         .beforeClosed()
         .subscribe((value: any) => {
           if (value) {
@@ -163,6 +163,7 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.deleteFactory(factory).subscribe((value: any) => {
         if (value) {
+          this._DIALOG_SERVICE.showSuccess();
           this.getFactory();
         }
       });
