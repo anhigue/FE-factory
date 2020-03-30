@@ -47,24 +47,6 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
           this.dataSource.paginator = this.paginator;
         }
       });
-      this.parts.push({
-        _id: 123,
-        description: 'Punta de flecha edicion estandar',
-        name: 'Punta de flecha',
-        partNo: '22334NNF',
-        price: 200,
-        vehicles: [
-          {
-            _id: 'ASDSD231',
-            brand: 'Ford',
-            line: 'Escape',
-            year: 2002,
-            universalCode: 'UX22'
-          }
-        ]
-      });
-          this.dataSource = new MatTableDataSource<PartInterface>(this.parts);
-          this.dataSource.paginator = this.paginator;
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',

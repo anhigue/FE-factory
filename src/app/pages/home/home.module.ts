@@ -34,6 +34,8 @@ import { PartDialogComponent } from '../../components/part-dialog/part-dialog.co
 import { PartVehicleDialogComponent } from '../../components/part-vehicle-dialog/part-vehicle-dialog.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SalesComponent } from '../../components/sales/sales.component';
+import { ClientSelectComponent } from '../../components/client-select/client-select.component';
+import { PartSelectComponent } from '../../components/part-select/part-select.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { SalesComponent } from '../../components/sales/sales.component';
     PartDialogComponent,
     PartVehicleDialogComponent,
     SalesComponent,
+    ClientSelectComponent,
+    PartSelectComponent,
   ],
   imports: [
     CommonModule,
@@ -77,6 +81,8 @@ import { SalesComponent } from '../../components/sales/sales.component';
     ClientDialogComponent,
     PartDialogComponent,
     PartVehicleDialogComponent,
+    ClientSelectComponent,
+    PartSelectComponent,
   ],
   providers: [
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
