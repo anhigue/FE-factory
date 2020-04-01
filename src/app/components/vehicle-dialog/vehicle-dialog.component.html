@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Opciones de Vehiculo</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroupVehicle">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Codigo Universal" type="text" required [(ngModel)]="vehicleUpdate.universalCode" [disabled] = "true"
+            formControlName="universalCode" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Marca" type="text" required [(ngModel)]="vehicleUpdate.brand"
+            formControlName="brand" />
+        </mat-form-field>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Linea" type="text" required [(ngModel)]="vehicleUpdate.line"
+            formControlName="line" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Año" type="number" required [(ngModel)]="vehicleUpdate.year"
+            formControlName="year" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+  <button mat-button [mat-dialog-close]="vehicleUpdate" *ngIf="formGroupVehicle.valid">
+    Ok.
+  </button>
+</mat-dialog-actions>

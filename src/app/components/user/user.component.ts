@@ -6,6 +6,8 @@ import { DialogService } from '../../services/dialog/dialog.service';
 import { UserService } from '../../services/user/user.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { LogInterface } from '../../../interfaces/LogInterface';
+import { LogService } from '../../services/log/log.service';
 
 @Component({
   selector: 'app-user',
@@ -21,11 +23,29 @@ export class UserComponent implements OnInit {
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
-    private _USER_SERVICE: UserService
+    private _USER_SERVICE: UserService,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
     this.getUsers();
+  }
+
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVICE.showSuccess();
+          this.getUsers();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
   }
 
   openDialogUserCreate() {
@@ -90,8 +110,14 @@ export class UserComponent implements OnInit {
     console.log(User);
     this._USER_SERVICE.createUser(User).subscribe((value: any) => {
       if (value) {
-        this._DIALOG_SERVICE.showSuccess();
-        this.getUsers();
+        this.registerAction({
+          action: 'create user',
+          date: new Date(),
+          user: {
+            name: 'Andres',
+            lastName: 'Higueros'
+          }
+        });
       } else {
         this._DIALOG_SERVICE.showError();
       }
@@ -101,8 +127,14 @@ export class UserComponent implements OnInit {
   private updateUser(User: UserInterface) {
     this._USER_SERVICE.updateUser(User).subscribe((value: any) => {
       if (value) {
-        this._DIALOG_SERVICE.showSuccess();
-        this.getUsers();
+        this.registerAction({
+          action: 'update user',
+          date: new Date(),
+          user: {
+            name: 'Andres',
+            lastName: 'Higueros'
+          }
+        });
       }
     });
   }
@@ -110,8 +142,14 @@ export class UserComponent implements OnInit {
   private deleteUser(User: UserInterface) {
     this._USER_SERVICE.deleteUser(User).subscribe(value => {
       if (value) {
-        this._DIALOG_SERVICE.showSuccess();
-        this.getUsers();
+        this.registerAction({
+          action: 'delete user',
+          date: new Date(),
+          user: {
+            name: 'Andres',
+            lastName: 'Higueros'
+          }
+        });
       }
     });
   }

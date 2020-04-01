@@ -18,6 +18,26 @@ import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
 import { SuccessComponent } from '../../components/success/success.component';
 import { ErrorComponent } from '../../components/error/error.component';
 import { DeleteComponent } from '../../components/delete/delete.component';
+import { FactoryComponent } from '../../components/factory/factory.component';
+import { FactoryDialogComponent } from '../../components/factory-dialog/factory-dialog.component';
+import { VehicleComponent } from '../../components/vehicle/vehicle.component';
+import { VehicleDialogComponent } from '../../components/vehicle-dialog/vehicle-dialog.component';
+import { FactoryService } from '../../services/factory/factory.service';
+import { VehiclesService } from '../../services/vehicles/vehicles.service';
+import { ClientComponent } from '../../components/client/client.component';
+import { ClientDialogComponent } from '../../components/client-dialog/client-dialog.component';
+import { ClientService } from '../../services/client/client.service';
+import { DialogService } from '../../services/dialog/dialog.service';
+import { PartService } from '../../services/part/part.service';
+import { PartComponent } from '../../components/part/part.component';
+import { PartDialogComponent } from '../../components/part-dialog/part-dialog.component';
+import { PartVehicleDialogComponent } from '../../components/part-vehicle-dialog/part-vehicle-dialog.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { SalesComponent } from '../../components/sales/sales.component';
+import { ClientSelectComponent } from '../../components/client-select/client-select.component';
+import { PartSelectComponent } from '../../components/part-select/part-select.component';
+import { LogService } from '../../services/log/log.service';
+import { HistoryComponent } from '../../components/history/history.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +51,19 @@ import { DeleteComponent } from '../../components/delete/delete.component';
     SuccessComponent,
     ErrorComponent,
     DeleteComponent,
+    FactoryComponent,
+    FactoryDialogComponent,
+    VehicleComponent,
+    VehicleDialogComponent,
+    ClientComponent,
+    ClientDialogComponent,
+    PartComponent,
+    PartDialogComponent,
+    PartVehicleDialogComponent,
+    SalesComponent,
+    ClientSelectComponent,
+    PartSelectComponent,
+    HistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -46,11 +79,26 @@ import { DeleteComponent } from '../../components/delete/delete.component';
     SuccessComponent,
     ErrorComponent,
     DeleteComponent,
+    FactoryDialogComponent,
+    VehicleDialogComponent,
+    ClientDialogComponent,
+    PartDialogComponent,
+    PartVehicleDialogComponent,
+    ClientSelectComponent,
+    PartSelectComponent,
   ],
   providers: [
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
+    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } },
     {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
-    UserService
+    UserService,
+    FactoryService,
+    VehiclesService,
+    ClientService,
+    DialogService,
+    PartService,
+    LogService
   ],
   bootstrap: [HomeComponent]
 })

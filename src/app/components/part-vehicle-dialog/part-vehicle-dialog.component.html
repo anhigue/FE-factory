@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Opciones de Repuesto Vehiculos</h2>
+<mat-dialog-content>
+  <div class="row">
+    <div class="col-md-12">
+      <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="universalCode">
+          <th mat-header-cell *matHeaderCellDef> Codigo Universal. </th>
+          <td mat-cell *matCellDef="let element"> {{element.universalCode}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="brand">
+          <th mat-header-cell *matHeaderCellDef> Marca </th>
+          <td mat-cell *matCellDef="let element"> {{element.brand}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="line">
+          <th mat-header-cell *matHeaderCellDef> Linea </th>
+          <td mat-cell *matCellDef="let element"> {{element.line}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef> Año </th>
+          <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="options">
+          <th mat-header-cell *matHeaderCellDef> Opciones </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-menu #appMenuCoin="matMenu">
+              <ng-template matMenuContent>
+                <button mat-menu-item [mat-dialog-close]="setDataReturn('delete', element)">Eliminar</button>
+              </ng-template>
+            </mat-menu>
+            <button mat-icon-button [matMenuTriggerFor]="appMenuCoin">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <h6>Agregar un nuevo vehiculo a la lista</h6>
+      <form [formGroup]="formGroupProduct">
+        <mat-form-field>
+          <mat-label>Escoger un vehiculo</mat-label>
+          <mat-select formControlName="vehicle" [(ngModel)]="vehicleSelect">
+            <mat-option [value]="null">
+              -
+            </mat-option>
+            <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+              {{ vehicle.universalCode}} - {{ vehicle.brand}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancelar</button>
+  <button mat-button [mat-dialog-close]="setDataReturn('assign', vehicleSelect)" *ngIf="formGroupProduct.valid">
+    Actualizar
+  </button>
+</mat-dialog-actions>
