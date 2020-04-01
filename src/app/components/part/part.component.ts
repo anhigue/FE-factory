@@ -9,6 +9,8 @@ import { PartDialogComponent } from '../part-dialog/part-dialog.component';
 import { VehicleInterface } from '../../../interfaces/VehicleInterface';
 import { PartVehicleDialogComponent } from '../part-vehicle-dialog/part-vehicle-dialog.component';
 import { ActionReturnInterface } from '../../../interfaces/ActionReturnInterface';
+import { LogInterface } from '../../../interfaces/LogInterface';
+import { LogService } from '../../services/log/log.service';
 
 @Component({
   selector: 'app-part',
@@ -31,7 +33,8 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
-    private _PART_SERVICE: PartService
+    private _PART_SERVICE: PartService,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
@@ -56,12 +59,35 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
     }
   }
 
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVICE.showSuccess();
+          this.getParts();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   private createPart(part: PartInterface): void {
     try {
       this._PART_SERVICE.newProduct(part).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getParts();
+          this.registerAction({
+            action: 'create part',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -104,8 +130,14 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
     try {
       this._PART_SERVICE.updateProduct(part).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getParts();
+          this.registerAction({
+            action: 'update part',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -141,8 +173,14 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
     try {
       this._PART_SERVICE.deleteProduct(part).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getParts();
+          this.registerAction({
+            action: 'delete part',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -211,7 +249,14 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
         .subscribe((value: any) => {
           if (value) {
             /* message success here */
-            this.getParts();
+            this.registerAction({
+              action: 'update part vehicles',
+              date: new Date(),
+              user: {
+                name: 'Andres',
+                lastName: 'Higueros'
+              }
+            });
           }
         });
     } catch (error) {

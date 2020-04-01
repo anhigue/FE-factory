@@ -3,12 +3,12 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrderInterface } from '../../../interfaces/OrderInterface';
 import { environment } from '../../../environments/environment';
+import { ReportInterface } from '../../../interfaces/ReportInterface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-
   private headers: HttpHeaders;
 
   constructor(private http: HttpClient) {
@@ -41,4 +41,28 @@ export class OrderService {
       headers: this.headers
     });
   }
+
+  newReport(report: ReportInterface): Observable<any> {
+    return this.http.get<any>(
+      environment.API_BASE +
+        '/report/new/' +
+        report.sort +
+        '/' +
+        report.status +
+        '/' +
+        report.dateInit +
+        '/' +
+        report.dateFinal,
+      { headers: this.headers }
+    );
+  }
+
+  registerReport(report: ReportInterface): Observable<any> {
+    return this.http.post<any>(environment.API_BASE + '/report', report, {headers: this.headers});
+  }
+
+  readReport(): Observable<ReportInterface[]> {
+    return this.http.get<ReportInterface[]>(environment.API_BASE + '/report', {headers: this.headers});
+  }
+
 }

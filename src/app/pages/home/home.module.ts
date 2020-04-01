@@ -36,6 +36,8 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { SalesComponent } from '../../components/sales/sales.component';
 import { ClientSelectComponent } from '../../components/client-select/client-select.component';
 import { PartSelectComponent } from '../../components/part-select/part-select.component';
+import { LogService } from '../../services/log/log.service';
+import { HistoryComponent } from '../../components/history/history.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,7 @@ import { PartSelectComponent } from '../../components/part-select/part-select.co
     SalesComponent,
     ClientSelectComponent,
     PartSelectComponent,
+    HistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -94,7 +97,8 @@ import { PartSelectComponent } from '../../components/part-select/part-select.co
     VehiclesService,
     ClientService,
     DialogService,
-    PartService
+    PartService,
+    LogService
   ],
   bootstrap: [HomeComponent]
 })

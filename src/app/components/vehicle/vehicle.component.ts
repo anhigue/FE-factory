@@ -7,6 +7,8 @@ import { DialogService } from '../../services/dialog/dialog.service';
 import { VehiclesService } from '../../services/vehicles/vehicles.service';
 import { DeleteComponent } from '../delete/delete.component';
 import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
+import { LogInterface } from '../../../interfaces/LogInterface';
+import { LogService } from '../../services/log/log.service';
 
 @Component({
   selector: 'app-vehicle',
@@ -30,7 +32,8 @@ export class VehicleComponent implements OnInit {
   constructor(
     private _FORM_BUILDER: FormBuilder,
     private _DIALOG_SERVICE: DialogService,
-    private _VEHICLE_SERVICE: VehiclesService
+    private _VEHICLE_SERVICE: VehiclesService,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
@@ -59,12 +62,35 @@ export class VehicleComponent implements OnInit {
     }
   }
 
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVICE.showSuccess();
+          this.getVehicle();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   public createVehicle(vehicle: VehicleInterface): void {
     try {
       this._VEHICLE_SERVICE.newVehicle(vehicle).subscribe((values: any) => {
         if (values) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getVehicle();
+          this.registerAction({
+            action: 'create vehicle',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -80,8 +106,14 @@ export class VehicleComponent implements OnInit {
     try {
       this._VEHICLE_SERVICE.deleteVehicle(vehicle).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getVehicle();
+          this.registerAction({
+            action: 'delete vehicle',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -96,8 +128,14 @@ export class VehicleComponent implements OnInit {
     try {
       this._VEHICLE_SERVICE.updateVehicle(vehicle).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getVehicle();
+          this.registerAction({
+            action: 'update vehicle',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {

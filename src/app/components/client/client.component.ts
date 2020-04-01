@@ -6,6 +6,8 @@ import { DialogService } from '../../services/dialog/dialog.service';
 import { ClientDialogComponent } from '../client-dialog/client-dialog.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { LogService } from '../../services/log/log.service';
+import { LogInterface } from '../../../interfaces/LogInterface';
 
 @Component({
   selector: 'app-client',
@@ -26,7 +28,8 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(
     private _DIALOG_SERVIE: DialogService,
-    private _CLIENT_SERVICE: ClientService
+    private _CLIENT_SERVICE: ClientService,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
@@ -53,12 +56,34 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
     }
   }
 
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVIE.showSuccess();
+          this.getClient();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVIE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
   private createClient(client: ClientInterface): void {
     try {
       this._CLIENT_SERVICE.newClient(client).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVIE.showSuccess();
-          this.getClient();
+          this.registerAction({
+            action: 'create client',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -100,8 +125,14 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
     try {
       this._CLIENT_SERVICE.updateClient(client).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVIE.showSuccess();
-          this.getClient();
+          this.registerAction({
+            action: 'Update client',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -137,8 +168,14 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
     try {
       this._CLIENT_SERVICE.deleteClient(client).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVIE.showSuccess();
-          this.getClient();
+          this.registerAction({
+            action: 'delete client',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {

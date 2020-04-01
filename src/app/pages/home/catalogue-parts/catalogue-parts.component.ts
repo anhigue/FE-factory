@@ -12,6 +12,10 @@ import { ClientInterface } from '../../../../interfaces/ClientInterface';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClientSelectComponent } from '../../../components/client-select/client-select.component';
 import { PartSelectComponent } from '../../../components/part-select/part-select.component';
+import { LogInterface } from '../../../../interfaces/LogInterface';
+import { LogService } from '../../../services/log/log.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { ReportInterface } from '../../../../interfaces/ReportInterface';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -67,6 +71,26 @@ export class CataloguePartsComponent
   timeFullDelivery?: Date;
   status?: boolean;
 
+  reports: ReportInterface[] = [];
+  createReport: ReportInterface = {
+    _id: null,
+    report: [],
+    factory: null,
+    status: null,
+    timeCreate: null,
+    user: null
+  };
+  formReport: FormGroup;
+
+  dataSourceReportOrder: MatTableDataSource<ReportInterface>;
+  displayedColumnsReportOrder: string[] = [
+    'status',
+    'timeCreate',
+    'factory',
+    'dateInit',
+    'dateFinal',
+  ];
+
   addDays(date, days): Date {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -87,13 +111,16 @@ export class CataloguePartsComponent
   constructor(
     private _DIALOG_SERVICE: DialogService,
     private _ORDER_SERVICE: OrderService,
-    private _FORM_BUILDER: FormBuilder
+    private _FORM_BUILDER: FormBuilder,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
     this.getOrder();
+    this.getReports();
     this.getPartOrder();
     this.validateClient();
+    this.validateReportRequest();
   }
 
   public validateClient(): void {
@@ -122,13 +149,36 @@ export class CataloguePartsComponent
     }
   }
 
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVICE.showSuccess();
+          this.getOrder();
+          this.getReports();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   private createOrder(order): void {
     try {
       this._ORDER_SERVICE.newSale(order).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getOrder();
-          /* this.clearScope(); */
+          this.registerAction({
+            action: 'create order parts',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -183,8 +233,14 @@ export class CataloguePartsComponent
     try {
       this._ORDER_SERVICE.deleteSale(order).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getOrder();
+          this.registerAction({
+            action: 'delete order parts',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -331,8 +387,14 @@ export class CataloguePartsComponent
     try {
       this._ORDER_SERVICE.updateSale(order, 'state').subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getOrder();
+          this.registerAction({
+            action: 'update state order parts',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -363,6 +425,127 @@ export class CataloguePartsComponent
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al cerrar la orden de repuestos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  onChange(ms: MatSlideToggleChange): void {
+    this.createReport.status = ms.checked;
+  }
+
+  validateReportRequest(): void {
+    this.formReport = this._FORM_BUILDER.group({
+      status: ['', Validators.required],
+      sort: ['', Validators.required],
+      dateInit: ['', Validators.required],
+      dateFinal: ['', Validators.required]
+    });
+  }
+
+  public wantReport(): void {
+    try {
+      this.createReport = {
+        _id: null,
+        report: null,
+        factory: null,
+        status: this.formReport.get('status').value,
+        timeCreate: new Date(),
+        user: null,
+        dateFinal: this.formReport.get('dateFinal').value,
+        dateInit: this.formReport.get('dateInit').value,
+        sort: this.formReport.get('sort').value
+      };
+
+      this._ORDER_SERVICE
+        .newReport(this.createReport)
+        .subscribe((value: any) => {
+          if (value) {
+            this.createReport = {
+              _id: null,
+              report: value,
+              factory: null,
+              status: this.formReport.get('status').value,
+              timeCreate: new Date(),
+              user: null,
+              dateFinal: this.formReport.get('dateFinal').value,
+              dateInit: this.formReport.get('dateInit').value,
+              sort: this.formReport.get('sort').value
+            };
+
+            console.log(this.createReport);
+            if (this.createReport.report.length === 0) {
+              this._DIALOG_SERVICE.showError(
+                'Consulta Vacia',
+                'La consulta que acabas de realizar no cuenta con infromacion alguna.',
+                null
+              );
+            }
+          }
+        });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al crear un reporte de orden de repuestos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private newReport(report: ReportInterface): void {
+    try {
+      this._ORDER_SERVICE.registerReport(report).subscribe((value: any) => {
+        if (value) {
+          this.registerAction({
+            action: 'register a new report of order parts',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al crear un reporte de orden de repuestos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private getReports(): void {
+    try {
+      this._ORDER_SERVICE.readReport().subscribe((value: any) => {
+        if (value) {
+          this.reports = value;
+          this.dataSourceReportOrder = new MatTableDataSource<ReportInterface>(
+            this.reports
+          );
+          this.dataSourceReportOrder.paginator = this.paginator;
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los reportes de ordenes de repuestos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  wantCreateReport(): void {
+    try {
+      this._DIALOG_SERVICE.showDelete('Guardar', 'Estas seguro de guardar este reporte', null).beforeClosed().subscribe( (value: any) => {
+        if (value) {
+          this.newReport(this.createReport);
+        }
+      })
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al crear un reporte de orden de repuestos.',
         JSON.stringify(error.name)
       );
     }

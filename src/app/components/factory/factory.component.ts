@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { FactoryService } from '../../services/factory/factory.service';
+import { LogInterface } from '../../../interfaces/LogInterface';
+import { LogService } from '../../services/log/log.service';
 
 @Component({
   selector: 'app-factory',
@@ -26,7 +28,8 @@ export class FactoryComponent implements OnInit {
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
-    private _FACTORY_SERVICE: FactoryService
+    private _FACTORY_SERVICE: FactoryService,
+    private _LOG_SERVICE: LogService
   ) {}
 
   ngOnInit() {
@@ -61,6 +64,23 @@ export class FactoryComponent implements OnInit {
     }
   }
 
+  private registerAction(log: LogInterface): void {
+    try {
+      this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
+        if (state) {
+          this._DIALOG_SERVICE.showSuccess();
+          this.getFactory();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al registrar la transaccion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   public wantCreate() {
     try {
       this._DIALOG_SERVICE.shareData = {};
@@ -85,8 +105,14 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.newFactory(factory).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getFactory();
+          this.registerAction({
+            action: 'create factory',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -122,8 +148,14 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.updateFactory(factory).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getFactory();
+          this.registerAction({
+            action: 'update factory',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
@@ -163,8 +195,14 @@ export class FactoryComponent implements OnInit {
     try {
       this._FACTORY_SERVICE.deleteFactory(factory).subscribe((value: any) => {
         if (value) {
-          this._DIALOG_SERVICE.showSuccess();
-          this.getFactory();
+          this.registerAction({
+            action: 'delete factory',
+            date: new Date(),
+            user: {
+              name: 'Andres',
+              lastName: 'Higueros'
+            }
+          });
         }
       });
     } catch (error) {
