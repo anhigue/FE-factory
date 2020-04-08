@@ -38,6 +38,10 @@ import { ClientSelectComponent } from '../../components/client-select/client-sel
 import { PartSelectComponent } from '../../components/part-select/part-select.component';
 import { LogService } from '../../services/log/log.service';
 import { HistoryComponent } from '../../components/history/history.component';
+import { DialogCustomComponent } from '../../components/dialog-custom/dialog-custom.component';
+import { StatusService } from '../../services/status/status.service';
+import { StatusComponent } from '../../components/status/status.component';
+import { StatusDialogComponent } from '../../components/status-dialog/status-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +68,9 @@ import { HistoryComponent } from '../../components/history/history.component';
     ClientSelectComponent,
     PartSelectComponent,
     HistoryComponent,
+    DialogCustomComponent,
+    StatusComponent,
+    StatusDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -86,6 +93,8 @@ import { HistoryComponent } from '../../components/history/history.component';
     PartVehicleDialogComponent,
     ClientSelectComponent,
     PartSelectComponent,
+    DialogCustomComponent,
+    StatusDialogComponent
   ],
   providers: [
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
@@ -98,7 +107,8 @@ import { HistoryComponent } from '../../components/history/history.component';
     ClientService,
     DialogService,
     PartService,
-    LogService
+    LogService,
+    StatusService
   ],
   bootstrap: [HomeComponent]
 })

@@ -5,4 +5,5 @@ export interface ClientInterface {
   status?: boolean;
   token?: string;
   address?: string;
+  url?: string;
 }

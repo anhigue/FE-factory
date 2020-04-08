@@ -28,10 +28,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <mat-form-field>
           <input matInput placeholder="Direccion" type="text" required [(ngModel)]="clientUpdate.address"
             formControlName="address" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="URL" type="text" required [(ngModel)]="clientUpdate.url"
+            formControlName="url" />
         </mat-form-field>
       </div>
     </div>

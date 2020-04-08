@@ -16,6 +16,9 @@ import { LogInterface } from '../../../../interfaces/LogInterface';
 import { LogService } from '../../../services/log/log.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ReportInterface } from '../../../../interfaces/ReportInterface';
+import { StatusInterface } from '../../../../interfaces/StatusInterface';
+import { StatusService } from '../../../services/status/status.service';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -30,7 +33,6 @@ export class CataloguePartsComponent
     'client',
     'total',
     'timeDelivery',
-    'timeCreate',
     'timeFullDelivery',
     'status',
     'options'
@@ -69,14 +71,18 @@ export class CataloguePartsComponent
   timeDelivery: Date;
   timeCreate?: Date;
   timeFullDelivery?: Date;
-  status?: boolean;
+  status?: StatusInterface[];
+  statusSelect?: StatusInterface = {};
 
   reports: ReportInterface[] = [];
   createReport: ReportInterface = {
     _id: null,
     report: [],
     factory: null,
-    status: null,
+    status: {
+      _id: null,
+      name: null
+    },
     timeCreate: null,
     user: null
   };
@@ -105,18 +111,19 @@ export class CataloguePartsComponent
       this.timeDelivery,
       this.clientOrder.timeDelivery
     );
-    this.status = false;
   }
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
     private _ORDER_SERVICE: OrderService,
     private _FORM_BUILDER: FormBuilder,
-    private _LOG_SERVICE: LogService
+    private _LOG_SERVICE: LogService,
+    private _STATUS_SERVICE: StatusService
   ) {}
 
   ngOnInit() {
     this.getOrder();
+    this.getStatus();
     this.getReports();
     this.getPartOrder();
     this.validateClient();
@@ -131,6 +138,7 @@ export class CataloguePartsComponent
     });
   }
 
+  /* get all orders */
   private getOrder(): void {
     try {
       this._ORDER_SERVICE.readSale().subscribe((value: any) => {
@@ -149,6 +157,24 @@ export class CataloguePartsComponent
     }
   }
 
+  /* get all the status */
+  private getStatus(): void {
+    try {
+      this._STATUS_SERVICE.readStatus().subscribe((value: any[]) => {
+        if (value) {
+          this.status = value;
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener a los estados de pedido.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  /* register log actions on the system */
   private registerAction(log: LogInterface): void {
     try {
       this._LOG_SERVICE.newLog(log).subscribe((state: any) => {
@@ -195,7 +221,7 @@ export class CataloguePartsComponent
       const order: OrderInterface = {
         client: this.clientOrder,
         factory: null,
-        status: false,
+        status: this.statusSelect,
         timeCreate: new Date(),
         timeDelivery: this.timeDelivery,
         timeFullDelivery: this.addDays(
@@ -383,8 +409,9 @@ export class CataloguePartsComponent
     }
   }
 
-  private updateState(order: OrderInterface): void {
+  private updateState(order: OrderInterface, statusName: string): void {
     try {
+      order.status = this.status.filter( (status) => status.name === statusName)[0];
       this._ORDER_SERVICE.updateSale(order, 'state').subscribe((value: any) => {
         if (value) {
           this.registerAction({
@@ -406,7 +433,7 @@ export class CataloguePartsComponent
     }
   }
 
-  wantEditState(item: OrderInterface): void {
+  wantEditState(item: OrderInterface, status: string): void {
     try {
       this._DIALOG_SERVICE
         .showDelete(
@@ -417,8 +444,7 @@ export class CataloguePartsComponent
         .beforeClosed()
         .subscribe((value: any) => {
           if (value) {
-            console.log(item);
-            this.updateState(item);
+            this.updateState(item, status);
           }
         });
     } catch (error) {
@@ -430,8 +456,8 @@ export class CataloguePartsComponent
     }
   }
 
-  onChange(ms: MatSlideToggleChange): void {
-    this.createReport.status = ms.checked;
+  onChange(ms: MatSelectChange): void {
+    this.createReport.status = ms.value;
   }
 
   validateReportRequest(): void {
@@ -445,6 +471,7 @@ export class CataloguePartsComponent
 
   public wantReport(): void {
     try {
+      console.log(this.formReport.get('status').value);
       this.createReport = {
         _id: null,
         report: null,

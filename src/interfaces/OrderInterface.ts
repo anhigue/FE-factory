@@ -1,6 +1,7 @@
 import { ClientInterface } from './ClientInterface';
 import { PartInterface } from './PartInterface';
 import { FactoryInterface } from './FactoryInterface';
+import { StatusInterface } from './StatusInterface';
 
 export interface OrderProductInterface {
   product?: PartInterface;
@@ -18,5 +19,5 @@ export interface OrderInterface {
   timeDelivery?: Date;
   timeCreate?: Date;
   timeFullDelivery?: Date;
-  status?: boolean;
+  status?: StatusInterface;
 }

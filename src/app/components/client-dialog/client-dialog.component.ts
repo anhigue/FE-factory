@@ -27,6 +27,7 @@ export class ClientDialogComponent implements OnInit {
       timeDelivery: ['', Validators.required],
       token: ['', Validators.required],
       address: ['', Validators.required],
+      url: ['', Validators.required],
     });
   }
 

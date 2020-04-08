@@ -48,7 +48,7 @@ export class OrderService {
         '/report/new/' +
         report.sort +
         '/' +
-        report.status +
+        JSON.stringify(report.status) +
         '/' +
         report.dateInit +
         '/' +

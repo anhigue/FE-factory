@@ -22,6 +22,7 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
     'address',
     'status',
     'timeDelivery',
+    'url',
     'options'
   ];
 
