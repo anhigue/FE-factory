@@ -19,6 +19,7 @@ import { ReportInterface } from '../../../../interfaces/ReportInterface';
 import { StatusInterface } from '../../../../interfaces/StatusInterface';
 import { StatusService } from '../../../services/status/status.service';
 import { MatSelectChange } from '@angular/material/select';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -118,7 +119,8 @@ export class CataloguePartsComponent
     private _ORDER_SERVICE: OrderService,
     private _FORM_BUILDER: FormBuilder,
     private _LOG_SERVICE: LogService,
-    private _STATUS_SERVICE: StatusService
+    private _STATUS_SERVICE: StatusService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {
@@ -200,10 +202,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'create order parts',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -262,10 +261,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'delete order parts',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -417,10 +413,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'update state order parts',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -478,7 +471,7 @@ export class CataloguePartsComponent
         factory: null,
         status: this.formReport.get('status').value,
         timeCreate: new Date(),
-        user: null,
+        user: this._USER_SERVICE.getUser(),
         dateFinal: this.formReport.get('dateFinal').value,
         dateInit: this.formReport.get('dateInit').value,
         sort: this.formReport.get('sort').value
@@ -494,7 +487,7 @@ export class CataloguePartsComponent
               factory: null,
               status: this.formReport.get('status').value,
               timeCreate: new Date(),
-              user: null,
+              user: this._USER_SERVICE.getUser(),
               dateFinal: this.formReport.get('dateFinal').value,
               dateInit: this.formReport.get('dateInit').value,
               sort: this.formReport.get('sort').value
@@ -526,10 +519,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'register a new report of order parts',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });

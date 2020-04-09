@@ -12,7 +12,7 @@ import { LogService } from '../../services/log/log.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
   users: UserInterface[];
@@ -61,7 +61,7 @@ export class UserComponent implements OnInit {
             this._DIALOG_SERVICE.showError();
           }
         },
-        err => {
+        (err) => {
           this._DIALOG_SERVICE.showError();
           console.log(err);
         }
@@ -81,7 +81,7 @@ export class UserComponent implements OnInit {
             this._DIALOG_SERVICE.showError();
           }
         },
-        err => {
+        (err) => {
           this._DIALOG_SERVICE.showError();
           console.log(err);
         }
@@ -89,11 +89,18 @@ export class UserComponent implements OnInit {
   }
 
   public openDialogDelete(User: UserInterface) {
-    this._DIALOG_SERVICE.showDelete().beforeClosed().subscribe( rest => {
-      if (rest) {
-        this.deleteUser(User);
-      }
-    });
+    this._DIALOG_SERVICE
+      .showDelete(
+        'Eliminar',
+        'Estas seguro de que quieres eliminar este usuario',
+        null
+      )
+      .beforeClosed()
+      .subscribe((rest) => {
+        if (rest) {
+          this.deleteUser(User);
+        }
+      });
   }
 
   private getUsers() {
@@ -115,8 +122,8 @@ export class UserComponent implements OnInit {
           date: new Date(),
           user: {
             name: 'Andres',
-            lastName: 'Higueros'
-          }
+            lastName: 'Higueros',
+          },
         });
       } else {
         this._DIALOG_SERVICE.showError();
@@ -132,23 +139,23 @@ export class UserComponent implements OnInit {
           date: new Date(),
           user: {
             name: 'Andres',
-            lastName: 'Higueros'
-          }
+            lastName: 'Higueros',
+          },
         });
       }
     });
   }
 
   private deleteUser(User: UserInterface) {
-    this._USER_SERVICE.deleteUser(User).subscribe(value => {
+    this._USER_SERVICE.deleteUser(User).subscribe((value) => {
       if (value) {
         this.registerAction({
           action: 'delete user',
           date: new Date(),
           user: {
             name: 'Andres',
-            lastName: 'Higueros'
-          }
+            lastName: 'Higueros',
+          },
         });
       }
     });
@@ -230,7 +237,7 @@ export class UserComponent implements OnInit {
       </button>
     </mat-dialog-actions>
   `,
-  styles: ['mat-form-field {width: 100%;}']
+  styles: ['mat-form-field {width: 100%;}'],
 })
 export class DialogUserComponent implements OnInit {
   public userUpdate: UserInterface;
@@ -248,7 +255,7 @@ export class DialogUserComponent implements OnInit {
       name: ['', Validators.required],
       lastName: ['', Validators.required],
       position: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
 }

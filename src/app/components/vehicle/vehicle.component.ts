@@ -9,6 +9,7 @@ import { DeleteComponent } from '../delete/delete.component';
 import { VehicleDialogComponent } from '../vehicle-dialog/vehicle-dialog.component';
 import { LogInterface } from '../../../interfaces/LogInterface';
 import { LogService } from '../../services/log/log.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-vehicle',
@@ -33,7 +34,8 @@ export class VehicleComponent implements OnInit {
     private _FORM_BUILDER: FormBuilder,
     private _DIALOG_SERVICE: DialogService,
     private _VEHICLE_SERVICE: VehiclesService,
-    private _LOG_SERVICE: LogService
+    private _LOG_SERVICE: LogService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {
@@ -86,10 +88,7 @@ export class VehicleComponent implements OnInit {
           this.registerAction({
             action: 'create vehicle',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -109,10 +108,7 @@ export class VehicleComponent implements OnInit {
           this.registerAction({
             action: 'delete vehicle',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -131,10 +127,7 @@ export class VehicleComponent implements OnInit {
           this.registerAction({
             action: 'update vehicle',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });

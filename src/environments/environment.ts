@@ -9,7 +9,8 @@ export const environment = {
   algorithm: 'aes256',
   encoding: 'hex',
   USER_KEY: 'userKey',
-  USER_RESET_KEY: 'userResetKey'
+  USER_RESET_KEY: 'userResetKey',
+  TOKEN_USER: 'token_user'
 };
 
 /*

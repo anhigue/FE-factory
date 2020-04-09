@@ -8,6 +8,7 @@ import { DialogService } from '../../services/dialog/dialog.service';
 import { FactoryService } from '../../services/factory/factory.service';
 import { LogInterface } from '../../../interfaces/LogInterface';
 import { LogService } from '../../services/log/log.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-factory',
@@ -29,7 +30,8 @@ export class FactoryComponent implements OnInit {
   constructor(
     private _DIALOG_SERVICE: DialogService,
     private _FACTORY_SERVICE: FactoryService,
-    private _LOG_SERVICE: LogService
+    private _LOG_SERVICE: LogService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {
@@ -108,10 +110,7 @@ export class FactoryComponent implements OnInit {
           this.registerAction({
             action: 'create factory',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -151,10 +150,7 @@ export class FactoryComponent implements OnInit {
           this.registerAction({
             action: 'update factory',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -198,10 +194,7 @@ export class FactoryComponent implements OnInit {
           this.registerAction({
             action: 'delete factory',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });

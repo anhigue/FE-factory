@@ -42,6 +42,7 @@ import { DialogCustomComponent } from '../../components/dialog-custom/dialog-cus
 import { StatusService } from '../../services/status/status.service';
 import { StatusComponent } from '../../components/status/status.component';
 import { StatusDialogComponent } from '../../components/status-dialog/status-dialog.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { StatusDialogComponent } from '../../components/status-dialog/status-dia
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    FilterPipeModule
   ],
   entryComponents: [
     DialogUserComponent,

@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { LogService } from '../../services/log/log.service';
 import { LogInterface } from '../../../interfaces/LogInterface';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-client',
@@ -30,7 +31,8 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
   constructor(
     private _DIALOG_SERVIE: DialogService,
     private _CLIENT_SERVICE: ClientService,
-    private _LOG_SERVICE: LogService
+    private _LOG_SERVICE: LogService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {
@@ -80,10 +82,7 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
           this.registerAction({
             action: 'create client',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -129,10 +128,7 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
           this.registerAction({
             action: 'Update client',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -172,10 +168,7 @@ export class ClientComponent implements OnInit, CrudInterface<ClientInterface> {
           this.registerAction({
             action: 'delete client',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });

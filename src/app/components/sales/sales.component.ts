@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { SalesService } from '../../services/sales/sales.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-sales',
@@ -25,7 +26,8 @@ export class SalesComponent implements OnInit {
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
-    private _SALE_SERVICE: SalesService
+    private _SALE_SERVICE: SalesService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {

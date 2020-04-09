@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { UserInterface } from '../../../interfaces/UserInterface';
+import { UserLogInInterface } from '../../../interfaces/UserLogInInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +25,16 @@ export class UserService {
     );
   }
 
-  LogIn(User: UserInterface): Observable<UserInterface> {
-    return this.http.post<UserInterface>(environment.API_BASE + '', User, {
+  LogIn(User: UserInterface): Observable<UserLogInInterface> {
+    return this.http.post<UserLogInInterface>(environment.API_BASE + '/user/login', User, {
       headers: this.headers
     });
   }
 
-  setLogIn(User: UserInterface): void {
+  setLogIn(User: UserInterface, token: string): void {
     this.cookieService.set(environment.USER_KEY, JSON.stringify(User));
-    this.route.navigateByUrl('home');
+    localStorage.setItem(environment.TOKEN_USER, token);
+    this.route.navigateByUrl('/home');
   }
 
   IsLogged(): boolean {
@@ -51,7 +53,8 @@ export class UserService {
   }
 
   Logout(): void {
-    this.cookieService.delete(environment.USER_KEY);
+    this.cookieService.delete(environment.USER_KEY, '/');
+    localStorage.removeItem(environment.TOKEN_USER);
     this.route.navigateByUrl('/login');
   }
 

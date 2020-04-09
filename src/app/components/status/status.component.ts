@@ -9,6 +9,7 @@ import { StatusService } from '../../services/status/status.service';
 import { LogService } from '../../services/log/log.service';
 import { LogInterface } from '../../../interfaces/LogInterface';
 import { StatusDialogComponent } from '../status-dialog/status-dialog.component';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-status',
@@ -30,7 +31,8 @@ export class StatusComponent implements OnInit, CrudInterface<StatusInterface> {
   constructor(
     private _DIALOG_SERVIE: DialogService,
     private _STATUS_SERVICE: StatusService,
-    private _LOG_SERVICE: LogService
+    private _LOG_SERVICE: LogService,
+    private _USER_SERVICE: UserService
   ) { }
 
   ngOnInit() {
@@ -81,10 +83,7 @@ export class StatusComponent implements OnInit, CrudInterface<StatusInterface> {
           this.registerAction({
             action: 'create status',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });

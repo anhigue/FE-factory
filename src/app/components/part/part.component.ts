@@ -11,11 +11,14 @@ import { PartVehicleDialogComponent } from '../part-vehicle-dialog/part-vehicle-
 import { ActionReturnInterface } from '../../../interfaces/ActionReturnInterface';
 import { LogInterface } from '../../../interfaces/LogInterface';
 import { LogService } from '../../services/log/log.service';
+import { MatSort } from '@angular/material/sort';
+import { VehiclesService } from '../../services/vehicles/vehicles.service';
+import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-part',
   templateUrl: './part.component.html',
-  styleUrls: ['./part.component.scss']
+  styleUrls: ['./part.component.scss'],
 })
 export class PartComponent implements OnInit, CrudInterface<PartInterface> {
   displayedColumns: string[] = [
@@ -24,21 +27,28 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
     'description',
     'partNo',
     'price',
-    'options'
+    'options',
   ];
   parts: PartInterface[] = [];
   dataSource: MatTableDataSource<PartInterface>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  vehicles: VehicleInterface[] = [];
+  vehicleSelected: VehicleInterface;
 
   constructor(
     private _DIALOG_SERVICE: DialogService,
     private _PART_SERVICE: PartService,
-    private _LOG_SERVICE: LogService
+    private _VEHICLE_SERVICE: VehiclesService,
+    private _LOG_SERVICE: LogService,
+    private _USER_SERVICE: UserService
   ) {}
 
   ngOnInit() {
     this.getParts();
+    this.getVehicles();
   }
 
   private getParts(): void {
@@ -46,14 +56,32 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
       this._PART_SERVICE.readProduct().subscribe((value: any) => {
         if (value) {
           this.parts = value;
+          console.log(this.parts);
           this.dataSource = new MatTableDataSource<PartInterface>(this.parts);
           this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         }
       });
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al obtener los repuestos',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private getVehicles(): void {
+    try {
+      this._VEHICLE_SERVICE.readVehicle().subscribe((value: any) => {
+        if (value) {
+          this.vehicles = value;
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos',
         JSON.stringify(error.name)
       );
     }
@@ -83,10 +111,7 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
           this.registerAction({
             action: 'create part',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -106,13 +131,13 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
         name: '',
         partNo: '',
         price: null,
-        vehicles: []
+        vehicles: [],
       };
       this._DIALOG_SERVICE.shareData = part;
       this._DIALOG_SERVICE
         .openDialog(PartDialogComponent)
         .beforeClosed()
-        .subscribe(value => {
+        .subscribe((value) => {
           if (value) {
             this.createPart(value);
           }
@@ -133,10 +158,7 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
           this.registerAction({
             action: 'update part',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -155,7 +177,7 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
       this._DIALOG_SERVICE
         .openDialog(PartDialogComponent)
         .beforeClosed()
-        .subscribe(value => {
+        .subscribe((value) => {
           if (value) {
             this.updatePart(value);
           }
@@ -176,10 +198,7 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
           this.registerAction({
             action: 'delete part',
             date: new Date(),
-            user: {
-              name: 'Andres',
-              lastName: 'Higueros'
-            }
+            user: this._USER_SERVICE.getUser()
           });
         }
       });
@@ -252,10 +271,7 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
             this.registerAction({
               action: 'update part vehicles',
               date: new Date(),
-              user: {
-                name: 'Andres',
-                lastName: 'Higueros'
-              }
+              user: this._USER_SERVICE.getUser()
             });
           }
         });
@@ -265,6 +281,21 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
         'Error',
         'Error al asignar un vehiculo al repuesto.'
       );
+    }
+  }
+
+  applyFilterString(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilterVehicles(event: Event): void {
+    if (this.vehicleSelected) {
+      const filterValue = JSON.stringify(this.vehicleSelected._id);
+      console.log(filterValue.trim().toLowerCase());
+      this.dataSource.filter = this.vehicleSelected._id.toLowerCase();
+    } else {
+      this.dataSource.filter = '';
     }
   }
 }

@@ -1,48 +1,71 @@
-<table mat-table [dataSource]="dataSource">
+<!-- <div class="row">
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilterString($event)" placeholder="Buscar repuesto">
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-label>Vehiculos</mat-label>
+      <mat-select [(ngModel)]="vehicleSelected" (selectionChange)="applyFilterVehicles($event)">
+        <mat-option [value]="null">--</mat-option>
+        <mat-option *ngFor="let item of vehicles" [value]="item">
+          {{ item.universalCode }} | {{ item.brand }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div> -->
+<div class="row">
+  <div class="col-md-12">
+    <table mat-table [dataSource]="dataSource" matSort>
 
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef> Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-  </ng-container>
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Nombre </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> Descripcion</th>
-    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-  </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion</th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="partNo">
-    <th mat-header-cell *matHeaderCellDef> No. Parte</th>
-    <td mat-cell *matCellDef="let element"> {{element.partNo}} </td>
-  </ng-container>
+      <ng-container matColumnDef="partNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte</th>
+        <td mat-cell *matCellDef="let element"> {{element.partNo}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef> Precio </th>
-    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-  </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="options">
-    <th mat-header-cell *matHeaderCellDef> Opciones </th>
-    <td mat-cell *matCellDef="let element">
-      <mat-menu #appMenuCoin="matMenu">
-        <ng-template matMenuContent>
-          <button mat-menu-item (click)="wantEdit(element);">Editar</button>
-          <button mat-menu-item (click)="wantUpdateVehicles(element)">Editar Vehiculos</button>
-          <button mat-menu-item (click)="wantDelete(element);">Eliminar</button>
-        </ng-template>
-      </mat-menu>
-      <button mat-icon-button [matMenuTriggerFor]="appMenuCoin">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<button mat-button id="btn-add" class="float-left" (click)="wantCreate();"><em
-    class="material-icons">add_circle</em></button>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef> Opciones </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-menu #appMenuCoin="matMenu">
+            <ng-template matMenuContent>
+              <button mat-menu-item (click)="wantEdit(element);">Editar</button>
+              <button mat-menu-item (click)="wantUpdateVehicles(element)">Editar Vehiculos</button>
+              <button mat-menu-item (click)="wantDelete(element);">Eliminar</button>
+            </ng-template>
+          </mat-menu>
+          <button mat-icon-button [matMenuTriggerFor]="appMenuCoin">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <button mat-button id="btn-add" class="float-left" (click)="wantCreate();"><em
+        class="material-icons">add_circle</em></button>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
