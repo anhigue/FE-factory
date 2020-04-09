@@ -48,4 +48,9 @@ export class ClientService {
     this.route.navigateByUrl('/client/' + Client.url);
   }
 
+  LogOutClient(): void {
+    localStorage.removeItem(environment.TOKEN_CLIENT);
+    this.route.navigateByUrl('/login/client');
+  }
+
 }

@@ -17,6 +17,9 @@
               </div>
               <a class="btn btn-primary btn-block" (click)="login()" *ngIf="userValidation.valid" >Ingresar</a>
           </form>
+          <small>
+            <a  class="text-center" [routerLink]="['/login/client']" routerLinkActive="router-link-active" >Ir a opciones de cliente</a>
+          </small>
       </div>
   </div>
 </div>
