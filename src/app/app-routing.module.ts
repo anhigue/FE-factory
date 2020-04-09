@@ -10,6 +10,8 @@ import { CatalogueUserComponent } from './pages/home/catalogue-user/catalogue-us
 import { CataloguePartsComponent } from './pages/home/catalogue-parts/catalogue-parts.component';
 import { UserInGuard } from './guard/user-in.guard';
 import { UserOutGuard } from './guard/user-out.guard';
+import { ClientConsultComponent } from './pages/client-consult/client-consult.component';
+import { LoginClientComponent } from './pages/login-client/login-client.component';
 
 const routes: Routes = [
   {
@@ -62,6 +64,14 @@ const routes: Routes = [
         component: Error404Component
       }
     ]
+  },
+  {
+    path: 'client/:clientUrl',
+    component: ClientConsultComponent
+  },
+  {
+    path: 'login/client',
+    component: LoginClientComponent
   },
   {
     path: '**',

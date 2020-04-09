@@ -10,7 +10,8 @@ export const environment = {
   encoding: 'hex',
   USER_KEY: 'userKey',
   USER_RESET_KEY: 'userResetKey',
-  TOKEN_USER: 'token_user'
+  TOKEN_USER: 'token_user',
+  TOKEN_CLIENT: 'token_client'
 };
 
 /*

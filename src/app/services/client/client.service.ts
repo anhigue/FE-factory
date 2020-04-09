@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ClientInterface } from '../../../interfaces/ClientInterface';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ export class ClientService {
 
   constructor(
     private http: HttpClient,
+    private cookieService: CookieService,
+    private route: Router
   ) {
     this.headers = new HttpHeaders().set(
       'Content-Type',
@@ -33,6 +37,15 @@ export class ClientService {
 
   deleteClient(client: ClientInterface): Observable<any> {
     return this.http.delete(environment.API_BASE + '/client/' + client._id, {headers: this.headers});
+  }
+
+  LogInClient(client: ClientInterface): Observable<any> {
+    return this.http.post<any>(environment.API_BASE + '/client/login', client, {headers: this.headers});
+  }
+
+  setLogInClient(Client: ClientInterface, token: string): void {
+    localStorage.setItem(environment.TOKEN_CLIENT, token);
+    this.route.navigateByUrl('/client/' + Client.url);
   }
 
 }
