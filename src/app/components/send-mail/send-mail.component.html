@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Opciones de Cliente</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroupMail">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Correo destinatario" type="email" required [(ngModel)]="Mail.to"
+            formControlName="to" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <input matInput placeholder="Motivo de correo" type="text" required [(ngModel)]="Mail.subject"
+            formControlName="subject" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field>
+          <mat-label>Mensaje</mat-label>
+          <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="10" formControlName="text" [(ngModel)]="Mail.text"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="null">Cancelar</button>
+  <button mat-button [mat-dialog-close]="returnMail()" *ngIf="formGroupMail.valid">
+    Ok.
+  </button>
+</mat-dialog-actions>

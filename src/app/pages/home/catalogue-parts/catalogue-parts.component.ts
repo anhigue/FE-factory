@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import {
   OrderInterface,
-  OrderProductInterface
+  OrderProductInterface,
 } from '../../../../interfaces/OrderInterface';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../../services/dialog/dialog.service';
@@ -20,11 +20,14 @@ import { StatusInterface } from '../../../../interfaces/StatusInterface';
 import { StatusService } from '../../../services/status/status.service';
 import { MatSelectChange } from '@angular/material/select';
 import { UserService } from '../../../services/user/user.service';
+import { SendMailComponent } from '../../../components/send-mail/send-mail.component';
+import { EmailInterface } from '../../../../interfaces/EmailInterface';
+import { EmailService } from '../../../services/email/email.service';
 
 @Component({
   selector: 'app-catalogue-parts',
   templateUrl: './catalogue-parts.component.html',
-  styleUrls: ['./catalogue-parts.component.scss']
+  styleUrls: ['./catalogue-parts.component.scss'],
 })
 export class CataloguePartsComponent
   implements OnInit, CrudInterface<OrderInterface> {
@@ -36,7 +39,7 @@ export class CataloguePartsComponent
     'timeDelivery',
     'timeFullDelivery',
     'status',
-    'options'
+    'options',
   ];
 
   dataSourcePartOrder: MatTableDataSource<OrderInterface>;
@@ -45,7 +48,7 @@ export class CataloguePartsComponent
     'unitCost',
     'howMany',
     'total',
-    'options'
+    'options',
   ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -56,7 +59,7 @@ export class CataloguePartsComponent
     name: null,
     status: null,
     timeDelivery: null,
-    token: null
+    token: null,
   };
   clientOrderValidate: FormGroup;
 
@@ -65,7 +68,7 @@ export class CataloguePartsComponent
     howMany: 0,
     product: null,
     unitCost: 0,
-    total: 0
+    total: 0,
   };
 
   total = 0;
@@ -82,10 +85,10 @@ export class CataloguePartsComponent
     factory: null,
     status: {
       _id: null,
-      name: null
+      name: null,
     },
     timeCreate: null,
-    user: null
+    user: null,
   };
   formReport: FormGroup;
 
@@ -96,6 +99,7 @@ export class CataloguePartsComponent
     'factory',
     'dateInit',
     'dateFinal',
+    'options',
   ];
 
   addDays(date, days): Date {
@@ -120,7 +124,8 @@ export class CataloguePartsComponent
     private _FORM_BUILDER: FormBuilder,
     private _LOG_SERVICE: LogService,
     private _STATUS_SERVICE: StatusService,
-    private _USER_SERVICE: UserService
+    private _USER_SERVICE: UserService,
+    private _SEND_MAIL_SERVICE: EmailService
   ) {}
 
   ngOnInit() {
@@ -136,7 +141,7 @@ export class CataloguePartsComponent
     this.clientOrderValidate = this._FORM_BUILDER.group({
       name: ['', Validators.required],
       timeDelivery: ['', Validators.required],
-      address: ['', Validators.required]
+      address: ['', Validators.required],
     });
   }
 
@@ -202,7 +207,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'create order parts',
             date: new Date(),
-            user: this._USER_SERVICE.getUser()
+            user: this._USER_SERVICE.getUser(),
           });
         }
       });
@@ -228,7 +233,7 @@ export class CataloguePartsComponent
           this.clientOrder.timeDelivery
         ),
         total: this.getTotalCostParts(),
-        parts: this.partOrder
+        parts: this.partOrder,
       };
 
       this._DIALOG_SERVICE
@@ -261,7 +266,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'delete order parts',
             date: new Date(),
-            user: this._USER_SERVICE.getUser()
+            user: this._USER_SERVICE.getUser(),
           });
         }
       });
@@ -347,7 +352,7 @@ export class CataloguePartsComponent
               howMany: 0,
               product: null,
               unitCost: 0,
-              total: 0
+              total: 0,
             };
             this.getPartOrder();
           }
@@ -379,7 +384,7 @@ export class CataloguePartsComponent
 
   getTotalCostParts(): number {
     return this.partOrder
-      .map(t => t.total)
+      .map((t) => t.total)
       .reduce((acc, value) => acc + value, 0);
   }
 
@@ -392,7 +397,7 @@ export class CataloguePartsComponent
           product: item.product,
           howMany: item.howMany,
           total: item.howMany * item.unitCost,
-          unitCost: item.unitCost
+          unitCost: item.unitCost,
         };
         this.getPartOrder();
       }
@@ -407,13 +412,15 @@ export class CataloguePartsComponent
 
   private updateState(order: OrderInterface, statusName: string): void {
     try {
-      order.status = this.status.filter( (status) => status.name === statusName)[0];
+      order.status = this.status.filter(
+        (status) => status.name === statusName
+      )[0];
       this._ORDER_SERVICE.updateSale(order, 'state').subscribe((value: any) => {
         if (value) {
           this.registerAction({
             action: 'update state order parts',
             date: new Date(),
-            user: this._USER_SERVICE.getUser()
+            user: this._USER_SERVICE.getUser(),
           });
         }
       });
@@ -458,7 +465,7 @@ export class CataloguePartsComponent
       status: ['', Validators.required],
       sort: ['', Validators.required],
       dateInit: ['', Validators.required],
-      dateFinal: ['', Validators.required]
+      dateFinal: ['', Validators.required],
     });
   }
 
@@ -474,7 +481,7 @@ export class CataloguePartsComponent
         user: this._USER_SERVICE.getUser(),
         dateFinal: this.formReport.get('dateFinal').value,
         dateInit: this.formReport.get('dateInit').value,
-        sort: this.formReport.get('sort').value
+        sort: this.formReport.get('sort').value,
       };
 
       this._ORDER_SERVICE
@@ -490,7 +497,7 @@ export class CataloguePartsComponent
               user: this._USER_SERVICE.getUser(),
               dateFinal: this.formReport.get('dateFinal').value,
               dateInit: this.formReport.get('dateInit').value,
-              sort: this.formReport.get('sort').value
+              sort: this.formReport.get('sort').value,
             };
 
             console.log(this.createReport);
@@ -519,7 +526,7 @@ export class CataloguePartsComponent
           this.registerAction({
             action: 'register a new report of order parts',
             date: new Date(),
-            user: this._USER_SERVICE.getUser()
+            user: this._USER_SERVICE.getUser(),
           });
         }
       });
@@ -554,15 +561,54 @@ export class CataloguePartsComponent
 
   wantCreateReport(): void {
     try {
-      this._DIALOG_SERVICE.showDelete('Guardar', 'Estas seguro de guardar este reporte', null).beforeClosed().subscribe( (value: any) => {
-        if (value) {
-          this.newReport(this.createReport);
-        }
-      })
+      this._DIALOG_SERVICE
+        .showDelete('Guardar', 'Estas seguro de guardar este reporte', null)
+        .beforeClosed()
+        .subscribe((value: any) => {
+          if (value) {
+            this.newReport(this.createReport);
+          }
+        });
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al crear un reporte de orden de repuestos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  wantSendMail(data: any): void {
+    try {
+      this._DIALOG_SERVICE.shareData = data;
+      this._DIALOG_SERVICE
+        .openDialog(SendMailComponent)
+        .beforeClosed()
+        .subscribe((value: any) => {
+          if (value) {
+            this.sentMail(value);
+          }
+        });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al reenviar el correo.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private sentMail(mail: EmailInterface): void {
+    try {
+      this._SEND_MAIL_SERVICE.sendMail(mail).subscribe( (value: any) => {
+        if (value.ok) {
+          this._DIALOG_SERVICE.showSuccess();
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al reenviar el correo.',
         JSON.stringify(error.name)
       );
     }

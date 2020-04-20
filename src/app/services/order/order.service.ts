@@ -4,41 +4,41 @@ import { Observable } from 'rxjs';
 import { OrderInterface } from '../../../interfaces/OrderInterface';
 import { environment } from '../../../environments/environment';
 import { ReportInterface } from '../../../interfaces/ReportInterface';
+import { UserService } from '../user/user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OrderService {
   private headers: HttpHeaders;
 
   constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders().set(
-      'Content-Type',
-      'application/json; charset=utf-8HttpClient'
-    );
+    this.headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8HttpClient',
+    });
   }
 
   newSale(sale: OrderInterface): Observable<any> {
     return this.http.post<any>(environment.API_BASE + '/order', sale, {
-      headers: this.headers
+      headers: this.headers,
     });
   }
 
   readSale(): Observable<OrderInterface[]> {
     return this.http.get<OrderInterface[]>(environment.API_BASE + '/order', {
-      headers: this.headers
+      headers: this.headers,
     });
   }
 
   updateSale(sale: OrderInterface, path?: string): Observable<any> {
     return this.http.put(environment.API_BASE + '/order/' + path, sale, {
-      headers: this.headers
+      headers: this.headers,
     });
   }
 
   deleteSale(sale: OrderInterface): Observable<any> {
     return this.http.delete(environment.API_BASE + '/order/' + sale._id, {
-      headers: this.headers
+      headers: this.headers,
     });
   }
 
@@ -53,16 +53,21 @@ export class OrderService {
         report.dateInit +
         '/' +
         report.dateFinal,
-      { headers: this.headers }
+      {
+        headers: this.headers,
+      }
     );
   }
 
   registerReport(report: ReportInterface): Observable<any> {
-    return this.http.post<any>(environment.API_BASE + '/report', report, {headers: this.headers});
+    return this.http.post<any>(environment.API_BASE + '/report', report, {
+      headers: this.headers,
+    });
   }
 
   readReport(): Observable<ReportInterface[]> {
-    return this.http.get<ReportInterface[]>(environment.API_BASE + '/report', {headers: this.headers});
+    return this.http.get<ReportInterface[]>(environment.API_BASE + '/report', {
+      headers: this.headers,
+    });
   }
-
 }

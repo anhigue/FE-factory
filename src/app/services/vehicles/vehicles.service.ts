@@ -3,6 +3,7 @@ import { VehicleInterface } from '../../../interfaces/VehicleInterface';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class VehiclesService {
 
   constructor(
     private http: HttpClient,
+    private _USER_SERVICE: UserService
   ) {
     this.headers = new HttpHeaders().set(
       'Content-Type',
@@ -23,7 +25,7 @@ export class VehiclesService {
   }
 
   readVehicle(): Observable<VehicleInterface[]> {
-    return this.http.get<VehicleInterface[]>(environment.API_BASE + '/vehicle', { headers: this.headers});
+    return this.http.get<VehicleInterface[]>(environment.API_BASE + '/vehicle', { headers: this.headers });
   }
 
   updateVehicle(vehicle: VehicleInterface): Observable<any> {

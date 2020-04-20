@@ -52,6 +52,14 @@ export class UserService {
     }
   }
 
+  getToken(): string {
+    try {
+      return localStorage.getItem(environment.TOKEN_USER);
+    } catch (error) {
+      return JSON.stringify(error);
+    }
+  }
+
   Logout(): void {
     this.cookieService.delete(environment.USER_KEY, '/');
     localStorage.removeItem(environment.TOKEN_USER);

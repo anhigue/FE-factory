@@ -11,7 +11,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing/home-routing.module';
-import { UserComponent, DialogUserComponent } from '../../components/user/user.component';
+import {
+  UserComponent,
+  DialogUserComponent,
+} from '../../components/user/user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MAT_CHECKBOX_CLICK_ACTION } from '@angular/material/checkbox';
@@ -43,6 +46,10 @@ import { StatusService } from '../../services/status/status.service';
 import { StatusComponent } from '../../components/status/status.component';
 import { StatusDialogComponent } from '../../components/status-dialog/status-dialog.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { OrderService } from '../../services/order/order.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from '../../services/interceptor/interceptor.service';
+import { SendMailComponent } from '../../components/send-mail/send-mail.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +79,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     DialogCustomComponent,
     StatusComponent,
     StatusDialogComponent,
+    SendMailComponent,
   ],
   imports: [
     CommonModule,
@@ -81,7 +89,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    FilterPipeModule
+    FilterPipeModule,
   ],
   entryComponents: [
     DialogUserComponent,
@@ -96,13 +104,17 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     ClientSelectComponent,
     PartSelectComponent,
     DialogCustomComponent,
-    StatusDialogComponent
+    StatusDialogComponent,
+    SendMailComponent,
   ],
   providers: [
-    { provide: STEPPER_GLOBAL_OPTIONS, useValue: { displayDefaultIndicatorType: false } },
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false },
+    },
     { provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true } },
-    {provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check'},
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'check' },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     UserService,
     FactoryService,
     VehiclesService,
@@ -110,8 +122,14 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     DialogService,
     PartService,
     LogService,
-    StatusService
+    StatusService,
+    OrderService,
+    /* {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    } */
   ],
-  bootstrap: [HomeComponent]
+  bootstrap: [HomeComponent],
 })
-export class HomeModule { }
+export class HomeModule {}
