@@ -32,8 +32,9 @@ export class LoginClientComponent implements OnInit {
     try {
       const user = this.userValidation.value;
       this._CLIENT_SERVICE.LogInClient(user).subscribe((value: any) => {
+        console.log(value);
         if (value.ok) {
-          this._CLIENT_SERVICE.setLogInClient(value.user, value.token);
+          this._CLIENT_SERVICE.setLogInClient(value.client, value.token);
         } else {
           this._DIALOG_SERVICE.showError(
             'Credenciales Invalidad',
