@@ -6,4 +6,5 @@ export interface ClientInterface {
   token?: string;
   address?: string;
   url?: string;
+  ip?: string;
 }

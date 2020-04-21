@@ -28,6 +28,7 @@ export class ClientDialogComponent implements OnInit {
       token: ['', Validators.required],
       address: ['', Validators.required],
       url: ['', Validators.required],
+      ip: ['', Validators.required],
     });
   }
 

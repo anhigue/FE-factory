@@ -191,7 +191,7 @@
       </mat-step>
     </mat-vertical-stepper>
   </mat-tab>
-  <mat-tab label="Generar Reporte">
+  <mat-tab label="Generar Reporte Interno">
     <div class="container">
       <br>
       <div class="row">
@@ -345,5 +345,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumnsReportOrder;"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-tab>
+  <mat-tab label="Generar reporte externo">
   </mat-tab>
 </mat-tab-group>
