@@ -43,8 +43,8 @@ export class ClientConsultComponent implements OnInit {
       this._CLIENT_SERVICE
         .readDataClient(this.client)
         .subscribe((value: any) => {
-          if (value) {
-            this.ordersClient = value;
+          if (value.ok) {
+            this.ordersClient = value.orders;
             this.dataSource = new MatTableDataSource<OrderInterface>(this.ordersClient);
             this.dataSource.paginator = this.paginator;
             this.dataSource.sort = this.sort;

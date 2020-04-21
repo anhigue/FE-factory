@@ -12,6 +12,8 @@ import { UserInGuard } from './guard/user-in.guard';
 import { UserOutGuard } from './guard/user-out.guard';
 import { ClientConsultComponent } from './pages/client-consult/client-consult.component';
 import { LoginClientComponent } from './pages/login-client/login-client.component';
+import { ConsultClientGuard } from './guard/consult-client.guard';
+import { LoginClientGuard } from './guard/login-client.guard';
 
 const routes: Routes = [
   {
@@ -67,11 +69,13 @@ const routes: Routes = [
   },
   {
     path: 'client/:clientUrl',
-    component: ClientConsultComponent
+    component: ClientConsultComponent,
+    canActivate: [ConsultClientGuard],
   },
   {
     path: 'login/client',
-    component: LoginClientComponent
+    component: LoginClientComponent,
+    canActivate: [LoginClientGuard]
   },
   {
     path: '**',
