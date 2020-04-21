@@ -45,12 +45,22 @@ export class ClientService {
 
   setLogInClient(Client: ClientInterface, token: string): void {
     localStorage.setItem(environment.TOKEN_CLIENT, token);
-    this.route.navigateByUrl('/client/' + Client.url);
+    localStorage.setItem('client', JSON.stringify(Client));
+    this.route.navigateByUrl('client/' + Client.url.replace('/', ''));
   }
 
   LogOutClient(): void {
     localStorage.removeItem(environment.TOKEN_CLIENT);
-    this.route.navigateByUrl('/login/client');
+    localStorage.removeItem('client');
+    this.route.navigateByUrl('login/client');
+  }
+
+  readDataClient(client: ClientInterface): Observable<any> {
+    return this.http.post<any>(environment.API_BASE + '/client/data/', client, { headers: this.headers});
+  }
+
+  readClientLocalStorage(): ClientInterface {
+    return JSON.parse(localStorage.getItem('client'));
   }
 
 }
