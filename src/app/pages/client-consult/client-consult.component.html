@@ -2,24 +2,14 @@
   <div class="row profile">
     <div class="col-md-3">
       <div class="profile-sidebar">
-        <!-- SIDEBAR USERPIC -->
         <div class="profile-userpic">
-          <!-- <img
-            [src]="user.photoUrl"
-            class="img-responsive" alt=""> -->
         </div>
-        <!-- END SIDEBAR USERPIC -->
-        <!-- SIDEBAR USER TITLE -->
         <div class="profile-usertitle">
           <div class="profile-usertitle-name">
-            <!-- {{ user.name }} -->
           </div>
           <div class="profile-usertitle-job">
-            <!-- {{ user.email }} -->
           </div>
         </div>
-        <!-- END SIDEBAR USER TITLE -->
-        <!-- SIDEBAR MENU -->
         <div class="profile-usermenu">
           <h4>Menu</h4>
           <ul class="nav">
@@ -27,7 +17,7 @@
               <a>
                 <i class="glyphicon glyphicon-home"></i> Información Cliente </a>
             </li>
-            <li class="active" (click)="closeSession();" >
+            <li class="active" (click)="closeSession();">
               <a>
                 <i class="glyphicon glyphicon-home"></i> Cerrar sesion de consulta </a>
             </li>
@@ -39,6 +29,36 @@
     <div class="col-md-9">
       <div class="profile-content">
         <!-- client actions -->
+        <h5>Consulta </h5>
+        <small>Consulta de ordenes de repuestos.</small>
+        <hr>
+        <!-- list orders and change some information -->
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Total</th>
+            <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="timeDelivery">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiempo de entrega</th>
+            <td mat-cell *matCellDef="let element"> {{element.timeDelivery | date: 'dd/MM/yyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="timeFullDelivery">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de entrega definitiva</th>
+            <td mat-cell *matCellDef="let element"> {{element.timeFullDelivery | date: 'dd/MM/yyy'}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let element"> {{element.status.name}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
       </div>
     </div>
   </div>

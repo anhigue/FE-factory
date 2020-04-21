@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClientService } from '../../services/client/client.service';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { OrderInterface } from '../../../interfaces/OrderInterface';
 import { ClientInterface } from 'src/interfaces/ClientInterface';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-client-consult',
@@ -12,6 +15,17 @@ import { ClientInterface } from 'src/interfaces/ClientInterface';
 export class ClientConsultComponent implements OnInit {
   ordersClient: OrderInterface[] = [];
   client: ClientInterface;
+
+  dataSource: MatTableDataSource<OrderInterface>;
+  displayedColumns: string[] = [
+    'total',
+    'timeDelivery',
+    'timeFullDelivery',
+    'status',
+  ];
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private _CLIENT_SERVICE: ClientService,
@@ -29,9 +43,11 @@ export class ClientConsultComponent implements OnInit {
       this._CLIENT_SERVICE
         .readDataClient(this.client)
         .subscribe((value: any) => {
-          console.log(value);
           if (value) {
             this.ordersClient = value;
+            this.dataSource = new MatTableDataSource<OrderInterface>(this.ordersClient);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
           }
         });
     } catch (error) {
