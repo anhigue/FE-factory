@@ -50,6 +50,8 @@ import { OrderService } from '../../services/order/order.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../services/interceptor/interceptor.service';
 import { SendMailComponent } from '../../components/send-mail/send-mail.component';
+import { ReportService } from '../../services/report/report.service';
+import { ReportComponent } from '../../components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import { SendMailComponent } from '../../components/send-mail/send-mail.componen
     StatusComponent,
     StatusDialogComponent,
     SendMailComponent,
+    ReportComponent,
   ],
   imports: [
     CommonModule,
@@ -124,6 +127,7 @@ import { SendMailComponent } from '../../components/send-mail/send-mail.componen
     LogService,
     StatusService,
     OrderService,
+    ReportService,
     /* {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorService,
