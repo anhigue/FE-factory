@@ -102,7 +102,11 @@ export class ReportComponent implements OnInit {
         .subscribe((value: any) => {
           if (value) {
             this.sentMail(value);
-            this._REPORT_SERVICE.newReportStore(this.reports);
+            this._REPORT_SERVICE.newReportStore({
+              client: this.clientSelect,
+              dateConsult: new Date(),
+              product: this.reports
+            });
           }
         });
     } catch (error) {

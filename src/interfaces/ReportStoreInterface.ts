@@ -18,3 +18,10 @@ export interface RequestReportInterface {
   password: string;
 }
 
+export interface ReportSaveInterface {
+  _id?: string;
+  product?: ReportStoreInterface[];
+  dateConsult?: Date;
+  client?: ClientInterface;
+}
+
