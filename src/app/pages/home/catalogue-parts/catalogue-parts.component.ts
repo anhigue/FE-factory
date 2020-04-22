@@ -234,7 +234,7 @@ export class CataloguePartsComponent
         ),
         total: this.getTotalCostParts(),
         parts: this.partOrder,
-        id: 0
+        id: 0,
       };
 
       this._DIALOG_SERVICE
@@ -601,7 +601,7 @@ export class CataloguePartsComponent
 
   private sentMail(mail: EmailInterface): void {
     try {
-      this._SEND_MAIL_SERVICE.sendMail(mail).subscribe( (value: any) => {
+      this._SEND_MAIL_SERVICE.sendMail(mail).subscribe((value: any) => {
         if (value.ok) {
           this._DIALOG_SERVICE.showSuccess();
         }
@@ -610,6 +610,22 @@ export class CataloguePartsComponent
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al reenviar el correo.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  cancelOrder(item: OrderInterface) {
+    try {
+      this._ORDER_SERVICE
+        .cancelOrderStore(item.client, item.id)
+        .subscribe((value) => {
+          console.log(value);
+        });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al cancelar un pedido de tienda.',
         JSON.stringify(error.name)
       );
     }

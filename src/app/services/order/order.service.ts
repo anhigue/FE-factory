@@ -5,6 +5,7 @@ import { OrderInterface } from '../../../interfaces/OrderInterface';
 import { environment } from '../../../environments/environment';
 import { ReportInterface } from '../../../interfaces/ReportInterface';
 import { UserService } from '../user/user.service';
+import { ClientInterface } from '../../../interfaces/ClientInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -69,5 +70,9 @@ export class OrderService {
     return this.http.get<ReportInterface[]>(environment.API_BASE + '/report', {
       headers: this.headers,
     });
+  }
+
+  cancelOrderStore(client: ClientInterface, id: number): Observable<any> {
+    return this.http.put<any>(environment.API_BASE + '/order/store/cancel',{ client, id }, {headers: this.headers});
   }
 }
