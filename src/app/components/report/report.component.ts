@@ -60,6 +60,22 @@ export class ReportComponent implements OnInit {
   ngOnInit() {
     this.validateForm();
     this.getClients();
+    this.getReportSave();
+  }
+
+  private getReportSave(): void {
+    try {
+      this._REPORT_SERVICE.readReportStore().subscribe( (value: any) => {
+        if (value) {
+          this.reportsSave = value;
+          this.dataSourceReport = new MatTableDataSource<ReportSaveInterface>(this.reportsSave);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   private getClients(): void {
@@ -116,6 +132,8 @@ export class ReportComponent implements OnInit {
               client: this.clientSelect,
               dateConsult: new Date(),
               product: this.reports
+            }).subscribe( (res: any) => {
+              console.log(res);
             });
           }
         });
@@ -129,6 +147,7 @@ export class ReportComponent implements OnInit {
       this._EMAIL_SERVICE.sendMail(mail).subscribe( (value: any) => {
         if (value.ok) {
           this._DIALOG_SERVICE.showSuccess();
+          this.getReportSave();
         }
       });
     } catch (error) {
