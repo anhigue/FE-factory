@@ -5,6 +5,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { PartService } from '../../services/part/part.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { VehiclesService } from '../../services/vehicles/vehicles.service';
+import { VehicleInterface } from '../../../interfaces/VehicleInterface';
 
 @Component({
   selector: 'app-part-select',
@@ -12,6 +15,8 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./part-select.component.scss']
 })
 export class PartSelectComponent implements OnInit {
+
+  cars: VehicleInterface[];
 
   displayedColumns: string[] = [
     'position',
@@ -25,15 +30,18 @@ export class PartSelectComponent implements OnInit {
   dataSource: MatTableDataSource<PartInterface>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     public dialogRef: MatDialogRef<PartSelectComponent>,
     private _DIALOG_SERVICE: DialogService,
-    private _PART_SERVICE: PartService
+    private _PART_SERVICE: PartService,
+    private _VEHICLE_SERVICE: VehiclesService
   ) {}
 
   ngOnInit() {
     this.getParts();
+    this.getVehicles();
   }
 
   private getParts(): void {
@@ -43,6 +51,7 @@ export class PartSelectComponent implements OnInit {
           this.parts = value;
           this.dataSource = new MatTableDataSource<PartInterface>(this.parts);
           this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
         }
       });
     } catch (error) {
@@ -53,4 +62,65 @@ export class PartSelectComponent implements OnInit {
       );
     }
   }
+
+  private getVehicles(): void {
+    try {
+      this._VEHICLE_SERVICE
+        .readVehicle()
+        .subscribe((value: VehicleInterface[]) => {
+          if (value) {
+            this.cars = value;
+          }
+        });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  applyFilterNameValuePrice(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyDataFilter(data: PartInterface[]) {
+    this.dataSource = new MatTableDataSource<PartInterface>(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilterVehicle(event: any) {
+    try {
+      if (event.value != null) {
+        let partFound: any[] = [];
+
+        this.parts.forEach((part: PartInterface) => {
+          let found = [];
+          part.vehicles.forEach((vehicle) => {
+            if (vehicle.universalCode === event.value.universalCode) {
+              found.push(vehicle);
+            }
+          });
+
+          if (found.length > 0) {
+            partFound.push(part);
+          }
+        });
+
+        this.applyDataFilter(partFound);
+      } else {
+        this.getParts();
+      }
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al filtrar por vehiculo',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
 }

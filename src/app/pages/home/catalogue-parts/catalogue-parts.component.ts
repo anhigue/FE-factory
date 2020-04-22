@@ -42,7 +42,7 @@ export class CataloguePartsComponent
     'options',
   ];
 
-  dataSourcePartOrder: MatTableDataSource<OrderInterface>;
+  dataSourcePartOrder: MatTableDataSource<OrderProductInterface>;
   displayedColumnsOrder: string[] = [
     'product',
     'unitCost',
@@ -227,13 +227,14 @@ export class CataloguePartsComponent
         factory: null,
         status: this.statusSelect,
         timeCreate: new Date(),
-        timeDelivery: this.timeDelivery,
+        timeDelivery: new Date(),
         timeFullDelivery: this.addDays(
           this.timeDelivery,
           this.clientOrder.timeDelivery
         ),
         total: this.getTotalCostParts(),
         parts: this.partOrder,
+        id: 0
       };
 
       this._DIALOG_SERVICE
@@ -325,7 +326,7 @@ export class CataloguePartsComponent
 
   private getPartOrder(): void {
     try {
-      this.dataSourcePartOrder = new MatTableDataSource<OrderInterface>(
+      this.dataSourcePartOrder = new MatTableDataSource<OrderProductInterface>(
         this.partOrder
       );
       this.dataSourcePartOrder.paginator = this.paginator;

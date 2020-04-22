@@ -1,22 +1,21 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-md-6">
     <mat-form-field>
-      <mat-label>Filtro</mat-label>
-      <input matInput (keyup)="applyFilterString($event)" placeholder="Buscar repuesto">
+      <mat-label>Nombre, descripcion, precio, No. parte</mat-label>
+      <input matInput placeholder="No. Parte: NN0234" (keyup)="applyFilterNameValuePrice($event)">
     </mat-form-field>
   </div>
   <div class="col-md-6">
     <mat-form-field>
-      <mat-label>Vehiculos</mat-label>
-      <mat-select [(ngModel)]="vehicleSelected" (selectionChange)="applyFilterVehicles($event)">
-        <mat-option [value]="null">--</mat-option>
-        <mat-option *ngFor="let item of vehicles" [value]="item">
-          {{ item.universalCode }} | {{ item.brand }}
+      <mat-select (selectionChange)="applyFilterVehicle($event);">
+        <mat-option [value]="null">---</mat-option>
+        <mat-option *ngFor="let vehicle of cars" [value]="vehicle">
+          {{ vehicle.universalCode}} - {{ vehicle.brand}} - {{ vehicle.line }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-</div> -->
+</div>
 <div class="row">
   <div class="col-md-12">
     <table mat-table [dataSource]="dataSource" matSort>

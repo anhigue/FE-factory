@@ -12,6 +12,7 @@ export interface OrderProductInterface {
 
 export interface OrderInterface {
   _id?: string;
+  id: number;
   client?: ClientInterface;
   factory?: FactoryInterface;
   parts?: OrderProductInterface[];

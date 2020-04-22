@@ -1,3 +1,21 @@
+<div class="row">
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-label>Nombre, descripcion, precio, No. parte</mat-label>
+      <input matInput placeholder="No. Parte: NN0234" (keyup)="applyFilterNameValuePrice($event)">
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilterVehicle($event);">
+        <mat-option [value]="null">---</mat-option>
+        <mat-option *ngFor="let vehicle of cars" [value]="vehicle">
+          {{ vehicle.universalCode}} - {{ vehicle.brand}} - {{ vehicle.line }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
 <table mat-table [dataSource]="dataSource">
 
   <ng-container matColumnDef="position">
