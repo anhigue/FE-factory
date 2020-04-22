@@ -2,67 +2,115 @@
 <h5>Reporte de productos vendidos</h5>
 <small>Realiza todas las acciones posibles de los productos vendidos.</small>
 <hr>
-<div class="row">
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Listado de reportes
+      </mat-panel-title>
+      <mat-panel-description>
+        Listado de reportes creados
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <table mat-table [dataSource]="dataSourceReport" matSort>
 
-  <div class="col-md-6">
-    <form [formGroup]="validateRequest">
-      <mat-form-field>
-        <mat-label>Contrasena</mat-label>
-        <input matInput placeholder="password" type="password" [(ngModel)]="password" formControlName="pass">
-      </mat-form-field>
-    </form>
-  </div>
-  <div class="col-md-6">
-    <mat-form-field>
-      <mat-select (selectionChange)="changeSelect($event)" [(ngModel)]="clientSelect">
-        <mat-option [value]="null">---</mat-option>
-        <mat-option *ngFor="let item of client" [value]="item">
-          {{ item.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <button mat-button *ngIf="validateRequest.valid" (click)="getReport();">Obtener reporte</button>
-  </div>
-</div>
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-<table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+        <td mat-cell *matCellDef="let element"> {{element.client.name}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte</th>
+        <td mat-cell *matCellDef="let element"> {{element.dateConsult | date: 'dd/MM/yyy'}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
-    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-  </ng-container>
+      <ng-container matColumnDef="option">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio de venta</th>
+        <td mat-cell *matCellDef="let element"> {{element.salePrice}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="partNo">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte</th>
-    <td mat-cell *matCellDef="let element"> {{element.partNo}} </td>
-  </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumnsReport"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsReport;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Nuevo reporte
+      </mat-panel-title>
+      <mat-panel-description>
+        Genera un nuevo reporte y envialo por correo
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="row">
 
-  <ng-container matColumnDef="salePrice">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio de venta</th>
-    <td mat-cell *matCellDef="let element"> {{element.salePrice}} </td>
-  </ng-container>
+      <div class="col-md-6">
+        <form [formGroup]="validateRequest">
+          <mat-form-field>
+            <mat-label>Contrasena</mat-label>
+            <input matInput placeholder="password" type="password" [(ngModel)]="password" formControlName="pass">
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-select (selectionChange)="changeSelect($event)" [(ngModel)]="clientSelect">
+            <mat-option [value]="null">---</mat-option>
+            <mat-option *ngFor="let item of client" [value]="item">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-button *ngIf="validateRequest.valid" (click)="getReport();">Obtener reporte</button>
+      </div>
+    </div>
 
-  <ng-container matColumnDef="stock">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad vendida </th>
-    <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
-  </ng-container>
+    <table mat-table [dataSource]="dataSource" matSort>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-<div class="row">
-  <div class="col-md-12">
-    <button mat-button (click)="wantSave()">Guardar reporte</button>
-  </div>
-</div>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="partNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte</th>
+        <td mat-cell *matCellDef="let element"> {{element.partNo}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="salePrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio de venta</th>
+        <td mat-cell *matCellDef="let element"> {{element.salePrice}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad vendida </th>
+        <td mat-cell *matCellDef="let element"> {{element.stock}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-button (click)="wantSave()">Guardar reporte</button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<br>

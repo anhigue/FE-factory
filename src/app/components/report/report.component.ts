@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../services/report/report.service';
-import { ReportStoreInterface, RequestReportInterface } from '../../../interfaces/ReportStoreInterface';
+import { ReportStoreInterface, RequestReportInterface, ReportSaveInterface } from '../../../interfaces/ReportStoreInterface';
 import { ClientInterface } from '../../../interfaces/ClientInterface';
 import { ClientService } from '../../services/client/client.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,6 +20,8 @@ import { SendMailComponent } from '../send-mail/send-mail.component';
 export class ReportComponent implements OnInit {
 
   reports: ReportStoreInterface[];
+  reportsSave: ReportSaveInterface[];
+
   client: ClientInterface;
   clientSelect: ClientInterface;
   password: string;
@@ -32,7 +34,15 @@ export class ReportComponent implements OnInit {
     'stock'
   ];
 
+  displayedColumnsReport: string[] = [
+    'position',
+    'client',
+    'date',
+    'option'
+  ];
+
   dataSource: MatTableDataSource<ReportStoreInterface>;
+  dataSourceReport: MatTableDataSource<ReportSaveInterface>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
