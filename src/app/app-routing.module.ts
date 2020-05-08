@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -14,6 +14,7 @@ import { ClientConsultComponent } from './pages/client-consult/client-consult.co
 import { LoginClientComponent } from './pages/login-client/login-client.component';
 import { ConsultClientGuard } from './guard/consult-client.guard';
 import { LoginClientGuard } from './guard/login-client.guard';
+import { ReportStoreModuleComponent } from './pages/home/report-store-module/report-store-module.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,11 @@ const routes: Routes = [
       {
         path: 'catalogue/part',
         component: CataloguePartsComponent,
+        canActivate: [UserOutGuard],
+      },
+      {
+        path: 'report',
+        component: ReportStoreModuleComponent,
         canActivate: [UserOutGuard],
       },
       {
