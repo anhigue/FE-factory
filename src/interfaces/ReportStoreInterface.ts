@@ -24,4 +24,3 @@ export interface ReportSaveInterface {
   dateConsult?: Date;
   client?: ClientInterface;
 }
-
