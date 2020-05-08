@@ -11,6 +11,8 @@ export interface ReportStoreInterface {
   price?: number;
   stock?: number;
   vehicles?: any[];
+  dateSale?: Date;
+  client?: ClientInterface;
 }
 
 export interface RequestReportInterface {
