@@ -138,20 +138,20 @@ export class ReportStoreModuleComponent implements OnInit {
     product: ReportStoreInterface[]
   ): ExcelDataInterface[] {
     try {
-      const data: ExcelDataInterface[] = [];
+      const data: any[] = [];
 
       product.forEach((element) => {
-        data.push({
-          client: element.client.name,
-          dateSale: element.dateSale,
-          description: element.description,
-          name: element.name,
-          partNo: element.partNo,
-          price: element.price,
-          salePrice: element.salePrice,
-          stock: element.stock,
-          valueWithoutIVA: element.valueWithoutIVA,
-        });
+        data.push([
+          element.client.name,
+          element.dateSale.toString().split('T')[0],
+          element.description,
+          element.name,
+          element.partNo,
+          element.price.toString(),
+          element.salePrice.toString(),
+          element.stock.toString(),
+          element.valueWithoutIVA.toString(),
+        ]);
       });
       return data;
     } catch (error) {
@@ -187,6 +187,7 @@ export class ReportStoreModuleComponent implements OnInit {
   private sentMail(mail: EmailInterface): void {
     try {
       this._SEND_MAIL_SERVICE.sendMail(mail).subscribe((value: any) => {
+        console.log(value);
         if (value.ok) {
           this._DIALOG_SERVICE.showSuccess();
         }
