@@ -27,7 +27,7 @@
       <mat-button-toggle value="refresh">
         <mat-icon aria-hidden="false" aria-label="Example home icon">refresh</mat-icon>
       </mat-button-toggle>
-      <mat-button-toggle value="sendMail">
+      <mat-button-toggle value="sendMail" (click)="wantSendMail();" >
         <mat-icon aria-hidden="false" aria-label="Example home icon">mail</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
@@ -82,12 +82,12 @@
 
       <ng-container matColumnDef="dateSale">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de venta </th>
-        <td mat-cell *matCellDef="let row"> {{row.dateSale | date: 'dd/MM/yy'}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.dateSale | date: 'dd/MM/yyy'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="client">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
-        <td mat-cell *matCellDef="let row"> {{row.client}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.client.name}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
