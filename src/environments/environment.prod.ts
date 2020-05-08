@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  API_BASE: 'http://192.168.56.103:4000/api/factory',
+  API_BASE: 'http://192.168.1.16:4000/api/factory',
   KEY_JSON: 'SIE_PASS',
   algorithm: 'aes256',
   encoding: 'hex',

@@ -150,9 +150,10 @@ export class CataloguePartsComponent
     try {
       this._ORDER_SERVICE.readSale().subscribe((value: any) => {
         if (value) {
+          console.log(value);
           this.orders = value;
           this.dataSource = new MatTableDataSource<OrderInterface>(this.orders);
-          this.dataSource.paginator = this.paginator;
+          /* this.dataSource.paginator = this.paginator; */
         }
       });
     } catch (error) {

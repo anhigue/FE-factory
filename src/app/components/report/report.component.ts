@@ -69,8 +69,8 @@ export class ReportComponent implements OnInit {
         if (value) {
           this.reportsSave = value;
           this.dataSourceReport = new MatTableDataSource<ReportSaveInterface>(this.reportsSave);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          /* this.dataSource.paginator = this.paginator; */
+          /* this.dataSource.sort = this.sort; */
         }
       });
     } catch (error) {
@@ -100,7 +100,7 @@ export class ReportComponent implements OnInit {
         if (value) {
           this.reports = value.data;
           this.dataSource = new MatTableDataSource<ReportStoreInterface>(this.reports);
-          this.dataSource.paginator = this.paginator;
+          /* this.dataSource.paginator = this.paginator; */
           this.dataSource.sort = this.sort;
         }
       });
