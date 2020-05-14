@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../services/report/report.service';
-import { ReportStoreInterface, RequestReportInterface, ReportSaveInterface } from '../../../interfaces/ReportStoreInterface';
+import {
+  ReportStoreInterface,
+  RequestReportInterface,
+  ReportSaveInterface,
+} from '../../../interfaces/ReportStoreInterface';
 import { ClientInterface } from '../../../interfaces/ClientInterface';
 import { ClientService } from '../../services/client/client.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,10 +19,9 @@ import { SendMailComponent } from '../send-mail/send-mail.component';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
-  styleUrls: ['./report.component.scss']
+  styleUrls: ['./report.component.scss'],
 })
 export class ReportComponent implements OnInit {
-
   reports: ReportStoreInterface[];
   reportsSave: ReportSaveInterface[];
 
@@ -31,15 +34,10 @@ export class ReportComponent implements OnInit {
     'description',
     'partNo',
     'salePrice',
-    'stock'
+    'stock',
   ];
 
-  displayedColumnsReport: string[] = [
-    'position',
-    'client',
-    'date',
-    'option'
-  ];
+  displayedColumnsReport: string[] = ['position', 'client', 'date', 'option'];
 
   dataSource: MatTableDataSource<ReportStoreInterface>;
   dataSourceReport: MatTableDataSource<ReportSaveInterface>;
@@ -55,7 +53,7 @@ export class ReportComponent implements OnInit {
     private _FORM_BUILDER: FormBuilder,
     private _DIALOG_SERVICE: DialogService,
     private _EMAIL_SERVICE: EmailService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.validateForm();
@@ -65,10 +63,12 @@ export class ReportComponent implements OnInit {
 
   private getReportSave(): void {
     try {
-      this._REPORT_SERVICE.readReportStore().subscribe( (value: any) => {
+      this._REPORT_SERVICE.readReportStore().subscribe((value: any) => {
         if (value) {
           this.reportsSave = value;
-          this.dataSourceReport = new MatTableDataSource<ReportSaveInterface>(this.reportsSave);
+          this.dataSourceReport = new MatTableDataSource<ReportSaveInterface>(
+            this.reportsSave
+          );
           /* this.dataSource.paginator = this.paginator; */
           /* this.dataSource.sort = this.sort; */
         }
@@ -80,7 +80,7 @@ export class ReportComponent implements OnInit {
 
   private getClients(): void {
     try {
-      this._CLIENT_SERVICE.readClient().subscribe( (value: any) => {
+      this._CLIENT_SERVICE.readClient().subscribe((value: any) => {
         if (value) {
           this.client = value;
         }
@@ -94,12 +94,14 @@ export class ReportComponent implements OnInit {
     try {
       const req: RequestReportInterface = {
         client: this.clientSelect,
-        password: this.password
+        password: this.password,
       };
-      this._REPORT_SERVICE.readReportStoreData(req).subscribe( (value: any) => {
+      this._REPORT_SERVICE.readReportStoreData(req).subscribe((value: any) => {
         if (value) {
           this.reports = value.data;
-          this.dataSource = new MatTableDataSource<ReportStoreInterface>(this.reports);
+          this.dataSource = new MatTableDataSource<ReportStoreInterface>(
+            this.reports
+          );
           /* this.dataSource.paginator = this.paginator; */
           this.dataSource.sort = this.sort;
         }
@@ -111,7 +113,7 @@ export class ReportComponent implements OnInit {
 
   private validateForm(): void {
     this.validateRequest = this._FORM_BUILDER.group({
-      pass: ['', Validators.required]
+      pass: ['', Validators.required],
     });
   }
 
@@ -128,13 +130,15 @@ export class ReportComponent implements OnInit {
         .subscribe((value: any) => {
           if (value) {
             this.sentMail(value);
-            this._REPORT_SERVICE.newReportStore({
-              client: this.clientSelect,
-              dateConsult: new Date(),
-              product: this.reports
-            }).subscribe( (res: any) => {
-              console.log(res);
-            });
+            this._REPORT_SERVICE
+              .newReportStore({
+                client: this.clientSelect,
+                dateConsult: new Date(),
+                product: this.reports,
+              })
+              .subscribe((res: any) => {
+                console.log(res);
+              });
           }
         });
     } catch (error) {
@@ -144,7 +148,7 @@ export class ReportComponent implements OnInit {
 
   private sentMail(mail: EmailInterface): void {
     try {
-      this._EMAIL_SERVICE.sendMail(mail).subscribe( (value: any) => {
+      this._EMAIL_SERVICE.sendMail(mail).subscribe((value: any) => {
         if (value.ok) {
           this._DIALOG_SERVICE.showSuccess();
           this.getReportSave();
@@ -159,4 +163,3 @@ export class ReportComponent implements OnInit {
     }
   }
 }
-

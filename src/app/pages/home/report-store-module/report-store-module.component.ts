@@ -106,10 +106,10 @@ export class ReportStoreModuleComponent implements OnInit {
   applyFilterVehicle(event: any) {
     try {
       if (event.value != null) {
-        let partFound: any[] = [];
+        const partFound: any[] = [];
 
         this.productSale.forEach((part: ReportStoreInterface) => {
-          let found = [];
+          const found = [];
           part.vehicles.forEach((vehicle) => {
             if (vehicle.universalCode === event.value.universalCode) {
               found.push(vehicle);
@@ -192,6 +192,31 @@ export class ReportStoreModuleComponent implements OnInit {
           this._DIALOG_SERVICE.showSuccess();
         }
       });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al reenviar el correo.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  filterByDate(): void {
+    try {
+      const startDate = new Date('2015-08-04');
+      const endDate = new Date('2015-08-12');
+
+      const resultProductData = this.productSale.filter( (a) => {
+          /* let hitDates = a.dateSale || {}; */
+          // extract all date strings
+          /* hitDates = Object.keys(hitDates); */
+          // convert strings to Date objcts
+          /* hitDates = hitDates.map((date) => { return new Date(date); }); */
+          // filter this dates by startDate and endDate
+          /* var hitDateMatches = hitDates.filter((date) => { return date >= startDate && date <= endDate }); */
+          /* return hitDateMatches.length > 0; */
+      });
+      console.log(resultProductData);
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',

@@ -25,6 +25,7 @@ export class PartDialogComponent implements OnInit {
       description: ['', Validators.required],
       partNo: ['', Validators.required],
       price: ['', Validators.required],
+      image: ['', Validators.required],
     });
   }
 }

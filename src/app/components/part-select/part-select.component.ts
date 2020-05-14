@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { VehiclesService } from '../../services/vehicles/vehicles.service';
 import { VehicleInterface } from '../../../interfaces/VehicleInterface';
+import { ViewProductComponent } from '../view-product/view-product.component';
 
 @Component({
   selector: 'app-part-select',
@@ -23,6 +24,7 @@ export class PartSelectComponent implements OnInit {
     'name',
     'description',
     'partNo',
+    'image',
     'price',
     'options'
   ];
@@ -123,4 +125,17 @@ export class PartSelectComponent implements OnInit {
     }
   }
 
+  viewImagePart(data: PartInterface): void {
+    try {
+      this._DIALOG_SERVICE.width = '';
+      this._DIALOG_SERVICE.shareData = data;
+      this._DIALOG_SERVICE.openDialog(ViewProductComponent);
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al mostrar la imagen',
+        JSON.stringify(error.name)
+      );
+    }
+  }
 }

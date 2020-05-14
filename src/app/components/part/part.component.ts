@@ -14,6 +14,7 @@ import { LogService } from '../../services/log/log.service';
 import { MatSort } from '@angular/material/sort';
 import { VehiclesService } from '../../services/vehicles/vehicles.service';
 import { UserService } from '../../services/user/user.service';
+import { ViewProductComponent } from '../view-product/view-product.component';
 
 @Component({
   selector: 'app-part',
@@ -23,10 +24,10 @@ import { UserService } from '../../services/user/user.service';
 export class PartComponent implements OnInit, CrudInterface<PartInterface> {
   cars: VehicleInterface[];
   displayedColumns: string[] = [
-    'position',
     'name',
     'description',
     'partNo',
+    'image',
     'price',
     'options',
   ];
@@ -324,6 +325,19 @@ export class PartComponent implements OnInit, CrudInterface<PartInterface> {
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al filtrar por vehiculo',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  viewImagePart(data: PartInterface): void {
+    try {
+      this._DIALOG_SERVICE.shareData = data;
+      this._DIALOG_SERVICE.openDialog(ViewProductComponent);
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al mostrar la imagen',
         JSON.stringify(error.name)
       );
     }

@@ -5,5 +5,6 @@ export interface PartInterface {
   description?: string;
   partNo?: string;
   price?: number;
+  image?: string;
   vehicles?: VehicleInterface[];
 }

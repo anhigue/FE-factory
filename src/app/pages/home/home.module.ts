@@ -54,6 +54,7 @@ import { ReportService } from '../../services/report/report.service';
 import { ReportComponent } from '../../components/report/report.component';
 import { ReportStoreComponent } from '../../components/report-store/report-store.component';
 import { ReportStoreModuleComponent } from './report-store-module/report-store-module.component';
+import { ViewProductComponent } from '../../components/view-product/view-product.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { ReportStoreModuleComponent } from './report-store-module/report-store-m
     ReportComponent,
     ReportStoreComponent,
     ReportStoreModuleComponent,
+    ViewProductComponent,
   ],
   imports: [
     CommonModule,
@@ -113,6 +115,7 @@ import { ReportStoreModuleComponent } from './report-store-module/report-store-m
     DialogCustomComponent,
     StatusDialogComponent,
     SendMailComponent,
+    ViewProductComponent,
   ],
   providers: [
     {
