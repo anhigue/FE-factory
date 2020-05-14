@@ -9,7 +9,7 @@
   <div class="col-md-4">
     <mat-form-field>
       <mat-label>Fecha de inicio</mat-label>
-      <input matInput [matDatepicker]="pickerStart">
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate">
       <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
       <mat-datepicker #pickerStart></mat-datepicker>
     </mat-form-field>
@@ -17,14 +17,14 @@
   <div class="col-md-4">
     <mat-form-field>
       <mat-label>Fecha final</mat-label>
-      <input matInput [matDatepicker]="pickerEnd">
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate">
       <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
   </div>
   <div class="col-md-4">
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-      <mat-button-toggle value="refresh">
+      <mat-button-toggle value="refresh" (click)="filterByDate();" >
         <mat-icon aria-hidden="false" aria-label="Example home icon">refresh</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle value="sendMail" (click)="wantSendMail();" >

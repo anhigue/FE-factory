@@ -36,6 +36,11 @@ export class ReportStoreModuleComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+
+  /* filter components */
+  public startDate: Date;
+  public endDate: Date;
+
   constructor(
     private _DIALOG_SERVICE: DialogService,
     private _REPORT_SERVICE: ReportService,
@@ -203,20 +208,26 @@ export class ReportStoreModuleComponent implements OnInit {
 
   filterByDate(): void {
     try {
-      const startDate = new Date('2015-08-04');
-      const endDate = new Date('2015-08-12');
+      const startDate = new Date(this.startDate);
+      const endDate = new Date(this.endDate);
 
       const resultProductData = this.productSale.filter( (a) => {
-          /* let hitDates = a.dateSale || {}; */
-          // extract all date strings
-          /* hitDates = Object.keys(hitDates); */
-          // convert strings to Date objcts
-          /* hitDates = hitDates.map((date) => { return new Date(date); }); */
+          const hitDates = new Date(a.dateSale);
           // filter this dates by startDate and endDate
-          /* var hitDateMatches = hitDates.filter((date) => { return date >= startDate && date <= endDate }); */
-          /* return hitDateMatches.length > 0; */
+          if ( hitDates >= startDate && hitDates <= endDate ) {
+            return a;
+          }
       });
-      console.log(resultProductData);
+
+      if (resultProductData.length > 0 ) {
+        this.productSale = resultProductData;
+      } else {
+        this._DIALOG_SERVICE.showError(
+          'Advertencia',
+          'No hay productos vendidos dentro de ese rango de fecha',
+          null
+        );
+      }
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
