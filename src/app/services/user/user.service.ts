@@ -61,7 +61,7 @@ export class UserService {
   }
 
   Logout(): void {
-    this.cookieService.delete(environment.USER_KEY, '/');
+    this.cookieService.delete(environment.USER_KEY, '');
     localStorage.removeItem(environment.TOKEN_USER);
     this.route.navigateByUrl('/login');
   }

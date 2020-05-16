@@ -20,11 +20,6 @@
   <div class="col-md-12">
     <table mat-table [dataSource]="dataSource" matSort>
 
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-      </ng-container>
-
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -38,6 +33,13 @@
       <ng-container matColumnDef="partNo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte</th>
         <td mat-cell *matCellDef="let element"> {{element.partNo}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Imagen </th>
+        <td mat-cell *matCellDef="let element">
+          <img [src]="element.image" alt="IMAGE PRODUCT" height="25" (click)="viewImagePart(element)" >
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="price">

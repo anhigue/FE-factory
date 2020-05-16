@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-md-12">
+    <h5>Modulo de Reporteria</h5>
+    <small>Realiza todas las acciones posibles con la informacion de los repuestos.</small>
+    <hr>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <mat-form-field>
+      <mat-label>Fecha de inicio</mat-label>
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4">
+    <mat-form-field>
+      <mat-label>Fecha final</mat-label>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-4">
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+      <mat-button-toggle value="refresh" (click)="filterByDate();" >
+        <mat-icon aria-hidden="false" aria-label="Example home icon">refresh</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="sendMail" (click)="wantSendMail();" >
+        <mat-icon aria-hidden="false" aria-label="Example home icon">mail</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilterVehicle($event);">
+        <mat-option [value]="null">---</mat-option>
+        <mat-option *ngFor="let vehicle of cars" [value]="vehicle">
+          {{ vehicle.universalCode}} - {{ vehicle.brand}} - {{ vehicle.line }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripcion </th>
+        <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="partNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> No. Parte </th>
+        <td mat-cell *matCellDef="let row"> {{row.partNo}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Precio </th>
+        <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> U/ vendidas </th>
+        <td mat-cell *matCellDef="let row"> {{row.stock}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateSale">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de venta </th>
+        <td mat-cell *matCellDef="let row"> {{row.dateSale | date: 'dd/MM/yyy'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+        <td mat-cell *matCellDef="let row"> {{row.client.name}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div>

@@ -52,6 +52,10 @@ import { InterceptorService } from '../../services/interceptor/interceptor.servi
 import { SendMailComponent } from '../../components/send-mail/send-mail.component';
 import { ReportService } from '../../services/report/report.service';
 import { ReportComponent } from '../../components/report/report.component';
+import { ReportStoreComponent } from '../../components/report-store/report-store.component';
+import { ReportStoreModuleComponent } from './report-store-module/report-store-module.component';
+import { ViewProductComponent } from '../../components/view-product/view-product.component';
+import { ListPartsComponent } from '../../components/list-parts/list-parts.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +87,10 @@ import { ReportComponent } from '../../components/report/report.component';
     StatusDialogComponent,
     SendMailComponent,
     ReportComponent,
+    ReportStoreComponent,
+    ReportStoreModuleComponent,
+    ViewProductComponent,
+    ListPartsComponent,
   ],
   imports: [
     CommonModule,
@@ -109,6 +117,8 @@ import { ReportComponent } from '../../components/report/report.component';
     DialogCustomComponent,
     StatusDialogComponent,
     SendMailComponent,
+    ViewProductComponent,
+    ListPartsComponent,
   ],
   providers: [
     {

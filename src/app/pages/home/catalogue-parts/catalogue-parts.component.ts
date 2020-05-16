@@ -23,6 +23,10 @@ import { UserService } from '../../../services/user/user.service';
 import { SendMailComponent } from '../../../components/send-mail/send-mail.component';
 import { EmailInterface } from '../../../../interfaces/EmailInterface';
 import { EmailService } from '../../../services/email/email.service';
+import { VehiclesService } from 'src/app/services/vehicles/vehicles.service';
+import { VehicleInterface } from '../../../../interfaces/VehicleInterface';
+import { PartService } from '../../../services/part/part.service';
+import { ListPartsComponent } from '../../../components/list-parts/list-parts.component';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -125,7 +129,9 @@ export class CataloguePartsComponent
     private _LOG_SERVICE: LogService,
     private _STATUS_SERVICE: StatusService,
     private _USER_SERVICE: UserService,
-    private _SEND_MAIL_SERVICE: EmailService
+    private _SEND_MAIL_SERVICE: EmailService,
+    private _VEHICLE_SERVICE: VehiclesService,
+    private _PART_SERVICE: PartService
   ) {}
 
   ngOnInit() {
@@ -135,6 +141,8 @@ export class CataloguePartsComponent
     this.getPartOrder();
     this.validateClient();
     this.validateReportRequest();
+    this.getVehicles();
+    this.getParts();
   }
 
   public validateClient(): void {
@@ -145,13 +153,106 @@ export class CataloguePartsComponent
     });
   }
 
+  /* get all vehicles */
+  private getVehicles(): void {
+    try {
+      this._VEHICLE_SERVICE.readVehicle().subscribe((value: any[]) => {
+        if (value) {
+          localStorage.setItem('VEHICLES', JSON.stringify(value));
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  /* get all parts */
+  private getParts(): void {
+    try {
+      this._PART_SERVICE.readProduct().subscribe((value: any[]) => {
+        if (value) {
+          localStorage.setItem('PARTS', JSON.stringify(value));
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private fixOrders(orders: any[]): OrderInterface[] {
+    try {
+      const fixedOrder: OrderInterface[] = [];
+      const parts = JSON.parse(localStorage.getItem('PARTS'));
+
+      /* loop to update order */
+      orders.forEach((item) => {
+        let orderPush: any = {};
+        if (item.id !== 0) {
+          orderPush._id = item._id;
+          orderPush.client = item.client;
+          orderPush.factory = null;
+          orderPush.id = item.id;
+          orderPush.status = item.status;
+          orderPush.timeCreate = item.timeCreate;
+          orderPush.timeDelivery = item.timeDelivery;
+          orderPush.timeFullDelivery = item.timeFullDelivery;
+
+          /* parts asigns */
+          const partsAssign: any[] = [];
+          item.parts.forEach((itemPart) => {
+            parts.forEach((part) => {
+              if (part.partNo === itemPart.product.partNo) {
+                partsAssign.push({
+                  product: part,
+                  unitCost: part.price,
+                  howMany: itemPart.stockSale,
+                  total: part.price * itemPart.stockSale,
+                });
+              }
+            });
+          });
+
+          orderPush.parts = partsAssign;
+
+          /* update total */
+          let sum = 0;
+          partsAssign.forEach((element) => {
+            sum += element.total;
+          });
+
+          orderPush.total = sum;
+
+        } else {
+          orderPush = item;
+        }
+
+        fixedOrder.push(orderPush);
+      });
+
+      return fixedOrder;
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al convertir la informacion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   /* get all orders */
   private getOrder(): void {
     try {
       this._ORDER_SERVICE.readSale().subscribe((value: any) => {
         if (value) {
-          console.log(value);
-          this.orders = value;
+          this.orders = this.fixOrders(value);
           this.dataSource = new MatTableDataSource<OrderInterface>(this.orders);
           /* this.dataSource.paginator = this.paginator; */
         }
@@ -330,7 +431,7 @@ export class CataloguePartsComponent
       this.dataSourcePartOrder = new MatTableDataSource<OrderProductInterface>(
         this.partOrder
       );
-      this.dataSourcePartOrder.paginator = this.paginator;
+      /* this.dataSourcePartOrder.paginator = this.paginator; */
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
@@ -473,7 +574,6 @@ export class CataloguePartsComponent
 
   public wantReport(): void {
     try {
-      console.log(this.formReport.get('status').value);
       this.createReport = {
         _id: null,
         report: null,
@@ -502,7 +602,6 @@ export class CataloguePartsComponent
               sort: this.formReport.get('sort').value,
             };
 
-            console.log(this.createReport);
             if (this.createReport.report.length === 0) {
               this._DIALOG_SERVICE.showError(
                 'Consulta Vacia',
@@ -621,12 +720,24 @@ export class CataloguePartsComponent
       this._ORDER_SERVICE
         .cancelOrderStore(item.client, item.id)
         .subscribe((value) => {
-          console.log(value);
         });
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al cancelar un pedido de tienda.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  viewParts(element: any) {
+    try {
+      this._DIALOG_SERVICE.shareData = element;
+      this._DIALOG_SERVICE.openDialog(ListPartsComponent);
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al visualizar los productos solicitados.',
         JSON.stringify(error.name)
       );
     }
