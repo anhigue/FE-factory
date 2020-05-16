@@ -73,6 +73,6 @@ export class OrderService {
   }
 
   cancelOrderStore(client: ClientInterface, id: number): Observable<any> {
-    return this.http.put<any>(environment.API_BASE + '/order/store/cancel',{ client, id }, {headers: this.headers});
+    return this.http.put<any>(environment.API_BASE + '/order/store/cancel', { client, id }, {headers: this.headers});
   }
 }

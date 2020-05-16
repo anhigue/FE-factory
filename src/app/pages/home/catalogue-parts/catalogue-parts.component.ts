@@ -23,6 +23,9 @@ import { UserService } from '../../../services/user/user.service';
 import { SendMailComponent } from '../../../components/send-mail/send-mail.component';
 import { EmailInterface } from '../../../../interfaces/EmailInterface';
 import { EmailService } from '../../../services/email/email.service';
+import { VehiclesService } from 'src/app/services/vehicles/vehicles.service';
+import { VehicleInterface } from '../../../../interfaces/VehicleInterface';
+import { PartService } from '../../../services/part/part.service';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -125,7 +128,9 @@ export class CataloguePartsComponent
     private _LOG_SERVICE: LogService,
     private _STATUS_SERVICE: StatusService,
     private _USER_SERVICE: UserService,
-    private _SEND_MAIL_SERVICE: EmailService
+    private _SEND_MAIL_SERVICE: EmailService,
+    private _VEHICLE_SERVICE: VehiclesService,
+    private _PART_SERVICE: PartService
   ) {}
 
   ngOnInit() {
@@ -135,6 +140,8 @@ export class CataloguePartsComponent
     this.getPartOrder();
     this.validateClient();
     this.validateReportRequest();
+    this.getVehicles();
+    this.getParts();
   }
 
   public validateClient(): void {
@@ -145,15 +152,104 @@ export class CataloguePartsComponent
     });
   }
 
+  /* get all vehicles */
+  private getVehicles(): void {
+    try {
+      this._VEHICLE_SERVICE.readVehicle().subscribe( (value: any[]) => {
+        if (value) {
+          localStorage.setItem('VEHICLES', JSON.stringify(value));
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  /* get all parts */
+  private getParts(): void {
+    try {
+      this._PART_SERVICE.readProduct().subscribe( (value: any[]) => {
+        if (value) {
+          localStorage.setItem('PARTS', JSON.stringify(value));
+        }
+      });
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al obtener los vehiculos.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  private fixOrders(orders: any[]): OrderInterface[] {
+    try {
+      const fixedOrder: OrderInterface[] = [];
+      const parts = JSON.parse(localStorage.getItem('PARTS'));
+      const vehicles = JSON.parse(localStorage.getItem('VEHICLES'));
+      /* loop to update order */
+      orders.forEach( item => {
+        const orderPush: any = {};
+        orderPush._id = item._id;
+        orderPush.client = item.client;
+        orderPush.factory = null;
+        orderPush.id = item.id;
+        orderPush.status = item.status;
+        orderPush.timeCreate = item.timeCreate;
+        orderPush.timeDelivery = item.timeDelivery;
+        orderPush.timeFullDelivery = item.timeFullDelivery;
+
+        /* parts asigns */
+        const partsAssign: any[] = [];
+        item.parts.forEach( itemPart => {
+          parts.forEach( part => {
+            if (part.partNo === itemPart.product.partNo) {
+              partsAssign.push({
+                product: part,
+                unitCost: part.price,
+                howMany: itemPart.stockSale,
+                total: (part.price * itemPart.stockSale)
+              });
+            }
+          });
+        });
+
+        orderPush.parts = partsAssign;
+
+        /* update total */
+        let sum = 0;
+        partsAssign.forEach( element => {
+          sum += element.total;
+        });
+
+        orderPush.total = sum;
+        fixedOrder.push(orderPush);
+      });
+
+      return fixedOrder;
+    } catch (error) {
+      console.log(error);
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al convertir la informacion.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
   /* get all orders */
   private getOrder(): void {
     try {
       this._ORDER_SERVICE.readSale().subscribe((value: any) => {
         if (value) {
-          console.log(value);
-          this.orders = value;
+          this.orders = this.fixOrders(value);
+          console.log(this.orders);
           this.dataSource = new MatTableDataSource<OrderInterface>(this.orders);
-          /* this.dataSource.paginator = this.paginator; */
+          this.dataSource.paginator = this.paginator;
         }
       });
     } catch (error) {
