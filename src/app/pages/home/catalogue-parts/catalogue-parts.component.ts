@@ -254,7 +254,7 @@ export class CataloguePartsComponent
         if (value) {
           this.orders = this.fixOrders(value);
           this.dataSource = new MatTableDataSource<OrderInterface>(this.orders);
-          this.dataSource.paginator = this.paginator;
+          /* this.dataSource.paginator = this.paginator; */
         }
       });
     } catch (error) {
@@ -431,7 +431,7 @@ export class CataloguePartsComponent
       this.dataSourcePartOrder = new MatTableDataSource<OrderProductInterface>(
         this.partOrder
       );
-      this.dataSourcePartOrder.paginator = this.paginator;
+      /* this.dataSourcePartOrder.paginator = this.paginator; */
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
