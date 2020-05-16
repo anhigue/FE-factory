@@ -26,6 +26,7 @@ import { EmailService } from '../../../services/email/email.service';
 import { VehiclesService } from 'src/app/services/vehicles/vehicles.service';
 import { VehicleInterface } from '../../../../interfaces/VehicleInterface';
 import { PartService } from '../../../services/part/part.service';
+import { ListPartsComponent } from '../../../components/list-parts/list-parts.component';
 
 @Component({
   selector: 'app-catalogue-parts',
@@ -155,7 +156,7 @@ export class CataloguePartsComponent
   /* get all vehicles */
   private getVehicles(): void {
     try {
-      this._VEHICLE_SERVICE.readVehicle().subscribe( (value: any[]) => {
+      this._VEHICLE_SERVICE.readVehicle().subscribe((value: any[]) => {
         if (value) {
           localStorage.setItem('VEHICLES', JSON.stringify(value));
         }
@@ -172,7 +173,7 @@ export class CataloguePartsComponent
   /* get all parts */
   private getParts(): void {
     try {
-      this._PART_SERVICE.readProduct().subscribe( (value: any[]) => {
+      this._PART_SERVICE.readProduct().subscribe((value: any[]) => {
         if (value) {
           localStorage.setItem('PARTS', JSON.stringify(value));
         }
@@ -190,49 +191,54 @@ export class CataloguePartsComponent
     try {
       const fixedOrder: OrderInterface[] = [];
       const parts = JSON.parse(localStorage.getItem('PARTS'));
-      const vehicles = JSON.parse(localStorage.getItem('VEHICLES'));
+
       /* loop to update order */
-      orders.forEach( item => {
-        const orderPush: any = {};
-        orderPush._id = item._id;
-        orderPush.client = item.client;
-        orderPush.factory = null;
-        orderPush.id = item.id;
-        orderPush.status = item.status;
-        orderPush.timeCreate = item.timeCreate;
-        orderPush.timeDelivery = item.timeDelivery;
-        orderPush.timeFullDelivery = item.timeFullDelivery;
+      orders.forEach((item) => {
+        let orderPush: any = {};
+        if (item.id !== 0) {
+          orderPush._id = item._id;
+          orderPush.client = item.client;
+          orderPush.factory = null;
+          orderPush.id = item.id;
+          orderPush.status = item.status;
+          orderPush.timeCreate = item.timeCreate;
+          orderPush.timeDelivery = item.timeDelivery;
+          orderPush.timeFullDelivery = item.timeFullDelivery;
 
-        /* parts asigns */
-        const partsAssign: any[] = [];
-        item.parts.forEach( itemPart => {
-          parts.forEach( part => {
-            if (part.partNo === itemPart.product.partNo) {
-              partsAssign.push({
-                product: part,
-                unitCost: part.price,
-                howMany: itemPart.stockSale,
-                total: (part.price * itemPart.stockSale)
-              });
-            }
+          /* parts asigns */
+          const partsAssign: any[] = [];
+          item.parts.forEach((itemPart) => {
+            parts.forEach((part) => {
+              if (part.partNo === itemPart.product.partNo) {
+                partsAssign.push({
+                  product: part,
+                  unitCost: part.price,
+                  howMany: itemPart.stockSale,
+                  total: part.price * itemPart.stockSale,
+                });
+              }
+            });
           });
-        });
 
-        orderPush.parts = partsAssign;
+          orderPush.parts = partsAssign;
 
-        /* update total */
-        let sum = 0;
-        partsAssign.forEach( element => {
-          sum += element.total;
-        });
+          /* update total */
+          let sum = 0;
+          partsAssign.forEach((element) => {
+            sum += element.total;
+          });
 
-        orderPush.total = sum;
+          orderPush.total = sum;
+
+        } else {
+          orderPush = item;
+        }
+
         fixedOrder.push(orderPush);
       });
 
       return fixedOrder;
     } catch (error) {
-      console.log(error);
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al convertir la informacion.',
@@ -247,7 +253,6 @@ export class CataloguePartsComponent
       this._ORDER_SERVICE.readSale().subscribe((value: any) => {
         if (value) {
           this.orders = this.fixOrders(value);
-          console.log(this.orders);
           this.dataSource = new MatTableDataSource<OrderInterface>(this.orders);
           this.dataSource.paginator = this.paginator;
         }
@@ -569,7 +574,6 @@ export class CataloguePartsComponent
 
   public wantReport(): void {
     try {
-      console.log(this.formReport.get('status').value);
       this.createReport = {
         _id: null,
         report: null,
@@ -598,7 +602,6 @@ export class CataloguePartsComponent
               sort: this.formReport.get('sort').value,
             };
 
-            console.log(this.createReport);
             if (this.createReport.report.length === 0) {
               this._DIALOG_SERVICE.showError(
                 'Consulta Vacia',
@@ -717,12 +720,24 @@ export class CataloguePartsComponent
       this._ORDER_SERVICE
         .cancelOrderStore(item.client, item.id)
         .subscribe((value) => {
-          console.log(value);
         });
     } catch (error) {
       this._DIALOG_SERVICE.showError(
         'Error',
         'Error al cancelar un pedido de tienda.',
+        JSON.stringify(error.name)
+      );
+    }
+  }
+
+  viewParts(element: any) {
+    try {
+      this._DIALOG_SERVICE.shareData = element;
+      this._DIALOG_SERVICE.openDialog(ListPartsComponent);
+    } catch (error) {
+      this._DIALOG_SERVICE.showError(
+        'Error',
+        'Error al visualizar los productos solicitados.',
         JSON.stringify(error.name)
       );
     }

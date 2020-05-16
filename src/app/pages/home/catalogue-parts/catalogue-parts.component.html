@@ -37,6 +37,7 @@
           <div *ngIf="element.status.name !== 'Cerrada' && element.status.name !== 'Cancelada'">
             <mat-menu #appMenuCoin="matMenu">
               <ng-template matMenuContent>
+                <button mat-menu-item (click)="viewParts(element);">Productos solicitados</button>
                 <button mat-menu-item (click)="wantEditState(element, 'Cerrada');">Cerrar Orden</button>
                 <button mat-menu-item (click)="wantEditState(element, 'Cancelada'); cancelOrder(element);" *ngIf="element.id != null">Cancelar Orden</button>
               </ng-template>

@@ -55,6 +55,7 @@ import { ReportComponent } from '../../components/report/report.component';
 import { ReportStoreComponent } from '../../components/report-store/report-store.component';
 import { ReportStoreModuleComponent } from './report-store-module/report-store-module.component';
 import { ViewProductComponent } from '../../components/view-product/view-product.component';
+import { ListPartsComponent } from '../../components/list-parts/list-parts.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { ViewProductComponent } from '../../components/view-product/view-product
     ReportStoreComponent,
     ReportStoreModuleComponent,
     ViewProductComponent,
+    ListPartsComponent,
   ],
   imports: [
     CommonModule,
@@ -116,6 +118,7 @@ import { ViewProductComponent } from '../../components/view-product/view-product
     StatusDialogComponent,
     SendMailComponent,
     ViewProductComponent,
+    ListPartsComponent,
   ],
   providers: [
     {
